@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_oyst_actions_index>
+        <reference name="content">
+            <block type="core/template" name="adminhtml_oyst_actions" as="adminhtml_oyst_actions" template="oyst/actions.phtml" />
+        </reference>
+    </adminhtml_oyst_actions_index>
+</layout>

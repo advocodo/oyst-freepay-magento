@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Oyst_Oyst>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Oyst_Oyst>
+    </modules>
+</config>

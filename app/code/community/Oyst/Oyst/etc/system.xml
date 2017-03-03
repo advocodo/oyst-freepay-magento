@@ -1,0 +1,335 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <oyst translate="label" module="oyst_oyst">
+            <label>Oyst</label>
+            <sort_order>10</sort_order>
+        </oyst>
+    </tabs>
+    <sections>
+        <oyst translate="label" module="oyst_oyst">
+            <label>Oyst</label>
+            <tab>oyst</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <global_settings translate="label">
+                    <label>Global Settings</label>
+                    <sort_order>10</sort_order>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable>
+                        <log_enable translate="label,comment">
+                            <label>Log enable</label>
+<!--                             <comment><![CDATA[Warning]]></comment> -->
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </log_enable>
+                        <api_login translate="label,comment">
+                            <label>Api login</label>
+<!--                             <comment><![CDATA[Warning]]></comment> -->
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </api_login>
+                        <api_url translate="label,comment">
+                            <label>Api url</label>
+                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </api_url>
+                        <notification_url translate="label,comment">
+                            <label>Notification url</label>
+                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>1</enable>
+                            </depends>
+                        </notification_url>
+                    </fields>
+                </global_settings>
+                <catalog_settings translate="label">
+                    <label>Catalog Settings</label>
+                    <sort_order>20</sort_order>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </enable>
+                        <number_per_pack translate="label,comment">
+                            <label>Number Per Pack</label>
+<!--                             <comment><![CDATA[Separed by comma]]></comment> -->
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </number_per_pack>
+                    </fields>
+                </catalog_settings>
+                <order_settings translate="label">
+                    <label>Order Settings</label>
+                    <sort_order>30</sort_order>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </enable>
+                    </fields>
+                </order_settings>
+                <payment_settings translate="label">
+                    <label>Payment Settings</label>
+                    <sort_order>40</sort_order>
+                    <frontend_type>text</frontend_type>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </enable>
+                        <invoice_label translate="label,comment">
+                            <label>Invoice Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </invoice_label>
+                        <secure_3ds_enable translate="label,comment">
+                            <label>3DS Secure</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </secure_3ds_enable>
+                        <cancel_url translate="label,comment">
+                            <label>Cancel Url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </cancel_url>
+                        <error_url translate="label,comment">
+                            <label>Error Url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </error_url>
+                        <return_url translate="label,comment">
+                            <label>Return Url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
+                            <depends>
+                                <enable>
+                                    <fieldset>global_settings</fieldset>
+                                    <value>1</value>
+                                </enable>
+                            </depends>
+                        </return_url>
+                    </fields>
+                </payment_settings>
+            </groups>
+        </oyst>
+        <payment>
+            <groups>
+                <oyst translate="label comment" module="oyst_oyst">
+                    <label>Oyst Payement</label>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Active</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <order_status translate="label">
+                            <label>New Order Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </order_status>
+                        <payment_action translate="label">
+                            <label>Automatically Invoice All Items</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payment/source_invoice</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <order_status separator=",">processing,processed_ogone</order_status>
+                            </depends>
+                        </payment_action>
+                        <allowspecific translate="label">
+                            <label>Payment Applicable From</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>50</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Countries Payment Applicable From</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>60</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                            </depends>
+                        </specificcountry>
+                        <sort_order translate="label">
+                            <label>Sort Payment List</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                        </sort_order>
+                    </fields>
+                </oyst>
+            </groups>
+        </payment>
+    </sections>
+</config>
