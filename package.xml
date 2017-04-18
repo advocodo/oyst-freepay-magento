@@ -1,14 +1,40 @@
 <?xml version="1.0"?>
 <package>
     <name>Oyst</name>
-    <version>0.1.2</version>
-    <stability>devel</stability>
+    <version>0.1.4</version>
+    <stability>beta</stability>
     <license>Oyst</license>
     <channel>community</channel>
     <extends/>
     <summary>Oyst</summary>
     <description>Oyst Payment and Catalog connector</description>
-    <notes>==== 0.1.2 ====&#xD;
+    <notes>==== 0.1.4 ====&#xD;
+&#xD;
+20/02/2017&#xD;
+&#xD;
+=== Functionality ===&#xD;
+&#xD;
+- Mise en place d'une transaction li&#xE9;e &#xE0; la commande&#xD;
+&#xD;
+=== Fixes ===&#xD;
+&#xD;
+- Suppression du bug enregistrement produits quand api disable&#xD;
+- Suppression du bug changement status commande quand api disable&#xD;
+&#xD;
+==== 0.1.3 ====&#xD;
+&#xD;
+30/01/2017&#xD;
+&#xD;
+=== Functionality ===&#xD;
+&#xD;
+- M&#xE9;thode de paiement de Oyst en premi&#xE8;re position&#xD;
+&#xD;
+=== Fixes ===&#xD;
+&#xD;
+- Suppression de l'activation api de paiement &amp;#xE0; deux endroit dans l'administration&#xD;
+- Transmission de l'order_id dans la transaction&#xD;
+&#xD;
+==== 0.1.2 ====&#xD;
 &#xD;
 30/01/2017&#xD;
 &#xD;
@@ -44,9 +70,9 @@ Cr&#xE9;ation du module&#xD;
 &#xD;
 -</notes>
     <authors><author><name>Roset</name><user>jeros</user><email>tech@onibi.fr</email></author></authors>
-    <date>2017-01-30</date>
-    <time>15:39:54</time>
-    <contents><target name="magecommunity"><dir name="Oyst"><dir name="Oyst"><dir name="Helper"><dir name="Catalog"><file name="Data.php" hash="5e6c4980a9001860c29b345e4cdf328c"/><file name="Tax.php" hash="6387ec0a25f3a683911ab82fd2007acf"/></dir><file name="Data.php" hash="57019e0f6f9b2e261dbde83927694dcc"/><dir name="Order"><file name="Data.php" hash="e5a5b51c25570f68a77a0771681f44a2"/></dir><dir name="Payment"><file name="Data.php" hash="e8985e8794d5def1b6d121c2350042fd"/></dir></dir><dir name="Model"><file name="Api.php" hash="4300b9869d7c7183f0ceb091e13e7fce"/><dir name="Catalog"><file name="ApiWrapper.php" hash="3f039b43feeb365479b967f6a7379c4c"/></dir><file name="Notification.php" hash="ac31c819f86ac96cbc225b47d74506ec"/><file name="Observer.php" hash="7543811fc483877254642751f1a57d0c"/><dir name="Order"><file name="ApiWrapper.php" hash="6e619d096308cf258cddaebee24ca82a"/></dir><dir name="Payment"><file name="ApiWrapper.php" hash="e7a20e4d4080dc912d0fac8e13a7fa4e"/><dir name="Method"><file name="Oyst.php" hash="6a7b5a3c7fc2abd2313e20b238508ef4"/></dir></dir><dir name="Resource"><dir name="Notification"><file name="Collection.php" hash="be2cf28fcaceedaca44cc802375f2c73"/></dir><file name="Notification.php" hash="a64755fbe7448d14f975ba644100226d"/></dir></dir><dir name="controllers"><dir name="Adminhtml"><dir name="Oyst"><file name="ActionsController.php" hash="b824cbb1b6af73643743a381f7dda982"/><file name="CatalogController.php" hash="f27e234332a3d43010d131147255e607"/></dir></dir><file name="NotificationsController.php" hash="f1e7ebb68fe9cc9591c650f4ad444de3"/><file name="PaymentController.php" hash="be0bfb218e0e6200ddf1aa87ace1ddf0"/></dir><dir name="data"><dir name="oyst_oyst_setup"><file name="data-install-0.1.0.php" hash="67492139f1ed42ed9cd4555e24e1375c"/></dir></dir><dir name="etc"><file name="adminhtml.xml" hash="8225ef94fee6cee94d9824b79012c6b5"/><file name="config.xml" hash="6282ff7f62b82d049b762565ca248926"/><file name="system.xml" hash="267389b4d3af0992640eb48b4321ca4c"/></dir><dir name="sql"><dir name="oyst_oyst_setup"><file name="mysql4-install-0.1.0.php" hash="64fe7880ff776f17a08e0dd7b9b2fffb"/><file name="mysql4-upgrade-0.1.0-0.1.1.php" hash="0702d5da41aaed65de41065a58d6e889"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="oyst"><dir><dir name="etc"><file name="theme.xml" hash="6d5744d0e0780fd2ce7649d4cfb71f6e"/></dir><dir name="layout"><file name="oyst_oyst.xml" hash="e4a200fc74fd939ba10cf186ade03557"/></dir><dir name="template"><dir name="oyst"><file name="actions.phtml" hash="9da7edc95feafe9870fa4b381ebeecdb"/></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Oyst_Oyst.xml" hash="0b044cdf73705c64cf80be3f33da5a7b"/></dir></target></contents>
+    <date>2017-02-20</date>
+    <time>09:44:34</time>
+    <contents><target name="magecommunity"><dir name="Oyst"><dir name="Oyst"><dir name="Helper"><dir name="Catalog"><file name="Data.php" hash="5e6c4980a9001860c29b345e4cdf328c"/><file name="Tax.php" hash="6387ec0a25f3a683911ab82fd2007acf"/></dir><file name="Data.php" hash="57019e0f6f9b2e261dbde83927694dcc"/><dir name="Order"><file name="Data.php" hash="4d9b4779c69dbceaae286b8ad81b6189"/></dir><dir name="Payment"><file name="Data.php" hash="ca2241f2e1e035d808ac50ef279efb5a"/></dir></dir><dir name="Model"><file name="Api.php" hash="04b25c028438fdde5a84c548073d4665"/><dir name="Catalog"><file name="ApiWrapper.php" hash="3f039b43feeb365479b967f6a7379c4c"/></dir><file name="Notification.php" hash="ac31c819f86ac96cbc225b47d74506ec"/><file name="Observer.php" hash="3c927f7070414f8c20d629082975af45"/><dir name="Order"><file name="ApiWrapper.php" hash="6e619d096308cf258cddaebee24ca82a"/></dir><dir name="Payment"><file name="ApiWrapper.php" hash="e7a20e4d4080dc912d0fac8e13a7fa4e"/><dir name="Method"><file name="Oyst.php" hash="6a7b5a3c7fc2abd2313e20b238508ef4"/></dir></dir><dir name="Resource"><dir name="Notification"><file name="Collection.php" hash="be2cf28fcaceedaca44cc802375f2c73"/></dir><file name="Notification.php" hash="a64755fbe7448d14f975ba644100226d"/></dir></dir><dir name="controllers"><dir name="Adminhtml"><dir name="Oyst"><file name="ActionsController.php" hash="b824cbb1b6af73643743a381f7dda982"/><file name="CatalogController.php" hash="f27e234332a3d43010d131147255e607"/></dir></dir><file name="NotificationsController.php" hash="f1e7ebb68fe9cc9591c650f4ad444de3"/><file name="PaymentController.php" hash="be0bfb218e0e6200ddf1aa87ace1ddf0"/></dir><dir name="data"><dir name="oyst_oyst_setup"><file name="data-install-0.1.0.php" hash="67492139f1ed42ed9cd4555e24e1375c"/></dir></dir><dir name="etc"><file name="adminhtml.xml" hash="8225ef94fee6cee94d9824b79012c6b5"/><file name="config.xml" hash="b6fda80193505ebacd192e0ea8ecdc7a"/><file name="system.xml" hash="c59ec9f18f50bbf01612c96c60b78019"/></dir><dir name="sql"><dir name="oyst_oyst_setup"><file name="mysql4-install-0.1.0.php" hash="64fe7880ff776f17a08e0dd7b9b2fffb"/><file name="mysql4-upgrade-0.1.0-0.1.1.php" hash="0702d5da41aaed65de41065a58d6e889"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="oyst"><dir><dir name="etc"><file name="theme.xml" hash="6d5744d0e0780fd2ce7649d4cfb71f6e"/></dir><dir name="layout"><file name="oyst_oyst.xml" hash="e4a200fc74fd939ba10cf186ade03557"/></dir><dir name="template"><dir name="oyst"><file name="actions.phtml" hash="9da7edc95feafe9870fa4b381ebeecdb"/></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Oyst_Oyst.xml" hash="0b044cdf73705c64cf80be3f33da5a7b"/></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.3.3</min><max>8.0.0</max></php></required></dependencies>
 </package>

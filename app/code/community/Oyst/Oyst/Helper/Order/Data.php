@@ -111,9 +111,6 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         $oystOrderId = $params['oyst_order_id'];
         $response = Mage::getModel('oyst_oyst/order_apiWrapper')->getOrder($oystOrderId);
 
-        //for Debug
-        //$response = $this->_getDebugResponse();
-
         //save order in Magento
         $order = $this->_importOrder($response);
         $response['magento_order_id'] = $order->getId();
@@ -348,6 +345,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         }
         return $order;
     }
+
     /**
      * Create Invoice for order
      * 
@@ -356,25 +354,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
      */
     public function invoice($params)
     {
-        //get order
-        $order = Mage::getModel('sales/order')->load($params['order_increment_id'], 'increment_id');
-
-        //prepare invoice
-        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
-
-        //pay offline
-        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
-        $invoice->register();
-
-        //don't notify customer
-        $invoice->getOrder()->setCustomerNoteNotify(false);
-        $invoice->getOrder()->setIsInProcess(true);
-
-        //save order and invoice
-        $transactionSave = Mage::getModel('core/resource_transaction')->addObject($invoice)->addObject($invoice->getOrder());
-        $transactionSave->save();
-        
-        return array('order_id' => $order->getId());
+        return Mage::helper('oyst_oyst/payment_data')->invoice($params);
     }
 
     /**
@@ -385,11 +365,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
      */
     public function cancel($params)
     {
-        $order = Mage::getModel('sales/order')->load($params['order_increment_id'], 'increment_id');
-        $order->cancel()->save();
-        return array(
-            'order_id' => $order->getId()
-        );
+        return Mage::helper('oyst_oyst/payment_data')->cancel($params);
     }
 
     /**
@@ -401,15 +377,5 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
     protected function _getConfig($code)
     {
         return Mage::getStoreConfig("oyst/order_settings/$code");
-    }
-
-    /**
-     * Mock for Oyst Response
-     * 
-     * @return mixed
-     */
-    private function _getDebugResponse()
-    {
-        return Zend_Json::decode('{"id":"274e918b-63d6-4cc7-af08-66d79cff2b3b","product_amount":{"value":10050,"currency":"EUR"},"transaction_amount":{"value":10050,"currency":"EUR"},"current_status":"pending","created_at":"MonJul04201610:13:08GMT+0200(CEST)","merchant_id":"77e3faaa-b40e-4ba1-a506-80a3d08c2d16","merchant_order_reference":null,"product_id":"2","product":{"id":2},"quantity":1,"shipment_amount":{"value":10050,"currency":"EUR"},"sku_id":"00e3faaa-b40e-4ba1-a506-80a3d08c2d16","status":[{"date":"2016-07-04T08:13:08.197766+00:00","status":"pending"},{"date":"2017-07-04T08:13:08.197766+00:00","status":"refunded"}],"transaction_id":"88e3faaa-b40e-4ba1-a506-80a3d08c2d16","vat":{"product":20,"shipment":20},"updated_at":null,"user_id":"0","user":{"id":4}}');
     }
 }

@@ -46,6 +46,9 @@ class Oyst_Oyst_Model_Observer
      */
     public function sendProductUpdate($observer)
     {
+        if (!$this->_getConfig("catalog", "enable")) {
+            return $this;
+        }
         // get product id
         $product = $observer->getEvent()->getProduct();
         $productId = $product->getId();
@@ -73,9 +76,10 @@ class Oyst_Oyst_Model_Observer
     public function sendOrderStatusUpdate($observer)
     {
         // if it's not while order import
-        if (! Mage::registry('order_status_changing')) {
+        if (!$this->_getConfig("order", "enable") || Mage::registry('order_status_changing')) {
             return $this;
         }
+        
         $order = $observer->getOrder();
         if ($state = $order->getState() != $order->getOrigData('state')) {
             $oystStatus = '';
@@ -107,5 +111,41 @@ class Oyst_Oyst_Model_Observer
         ));
         Mage::helper('oyst_oyst')->log('End of update of order id : ' . $order->getId());
         return $this;
+    }
+    
+    public function validateApiKey($observer)
+    {
+        $config = $observer->getEvent()->getObject();
+        if ($config->getSection() != "oyst") {
+            return $this;
+        }
+        
+        $groups = $config->getGroups();
+        $globalSettings = $groups["global_settings"];
+        
+        if (
+            $globalSettings["fields"]["enable"]["value"] == 1 &&
+            !empty($globalSettings["fields"]["api_login"]["value"])
+        ) {
+            $apiKey = $globalSettings["fields"]["api_login"]["value"];
+            
+            $apiResponse = Mage::getModel('oyst_oyst/api')->validateApikeyFromApi($apiKey);
+            if ($apiResponse != "true") {
+                Mage::throwException(Mage::helper('oyst_oyst')->__("API key %s is not valid", $apiKey));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get config from Magento
+     *
+     * @param string $code
+     * @return mixed
+     */
+    protected function _getConfig($section, $code)
+    {
+        return Mage::getStoreConfig("oyst/" . $section . "_settings/" . $code);
     }
 }

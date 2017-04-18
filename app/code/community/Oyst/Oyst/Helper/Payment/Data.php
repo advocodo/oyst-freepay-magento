@@ -19,18 +19,6 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 {
 
     /**
-     * Object construct
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        if (! $this->_getConfig('enable')) {
-            Mage::throwException($this->__('Order Module is not enabled'));
-        }
-    }
-
-    /**
      * Sync payment informations from notification
      *
      * @param array $event
@@ -73,9 +61,9 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         );
         //if data asynchrone payment notification is success, we invoice the order, else we cancel
         if ($data['success']) {
-            $result = Mage::helper('oyst_oyst/order_data')->invoice($params);
+            $result = $this->invoice($params, $data);
         } else {
-            $result = Mage::helper('oyst_oyst/order_data')->cancel($params);
+            $result = $this->cancel($params);
         }
 
         //save new status and result in db
@@ -85,6 +73,88 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
             ->save();
 
         return array('order_id' => $result['order_id']);
+    }
+
+    /**
+     * Create Invoice for order
+     *
+     * @param array $params
+     * @return array
+     */
+    public function invoice($params, $transactionData = false)
+    {
+        //get order
+        $order = Mage::getModel('sales/order')->load($params['order_increment_id'], 'increment_id');
+
+        //prepare invoice
+        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+
+        //prepare invoice
+        if ($transactionData) {
+            $this->_addTransaction($order->getId(), $transactionData);
+        }
+
+        //pay offline
+        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
+        $invoice->register();
+
+        //don't notify customer
+        $invoice->getOrder()->setCustomerNoteNotify(false);
+        $invoice->getOrder()->setIsInProcess(true);
+
+        //save order and invoice
+        $transactionSave = Mage::getModel('core/resource_transaction')->addObject($invoice)->addObject($invoice->getOrder());
+        $transactionSave->save();
+
+        return array('order_id' => $order->getId());
+    }
+
+    /**
+     * Cancel Order
+     *
+     * @param array $params
+     * @return array
+     */
+    public function cancel($params)
+    {
+        $order = Mage::getModel('sales/order')->load($params['order_increment_id'], 'increment_id');
+        $order->cancel()->save();
+        return array(
+            'order_id' => $order->getId()
+        );
+    }
+
+    /**
+     * Create order Transaction
+     *
+     * @param string $orderId
+     * @param string $TransactionId
+     */
+    protected function _addTransaction($orderId, $transactionData)
+    {
+        $_order = Mage::getModel('sales/order')->load($orderId);
+        $paymentId = !empty($transactionData["payment_id"]) ? $transactionData["payment_id"] : false;
+
+        if($_order->getId() && $paymentId) {
+            $payment = $_order->getPayment();
+            $amount = !empty($transactionData["amount"]) ? !empty($transactionData["amount"]["value"]) ? $transactionData["amount"]["value"] : 0 : 0;
+
+            //must transfort amount from YYYYY to YYY.YY
+            if ($amount > 0) {
+                $amount = (float)$amount / 100;
+            } else {
+                $amount = 0;
+            }
+
+            $payment->setTransactionId($paymentId)
+                ->setCurrencyCode()
+                ->setPreparedMessage("Success")
+                ->setParentTransactionId(false)
+                ->setShouldCloseParentTransaction(true)
+                ->setIsTransactionClosed(1)
+                ->registerCaptureNotification($amount, true);
+            $_order->save();
+        }
     }
 
     /**
@@ -107,6 +177,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     protected function _constructParams()
     {
         $order_increment_id = Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
+        $params['order_id'] = $order_increment_id;
         $params['notification_url'] = Mage::getStoreConfig('oyst/global_settings/notification_url') . 'order_increment_id' . DS . $order_increment_id;
         $params['is_3d'] = (bool) $this->_getConfig('secure_3ds_enable');
         $params['label'] = $this->_getConfig('invoice_label');

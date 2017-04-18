@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Oyst_Oyst>
-            <version>0.1.1</version>
+            <version>0.1.4</version>
         </Oyst_Oyst>
     </modules>
     <global>
@@ -112,6 +112,15 @@
                     </auto_invoice_order>
                 </observers>
             </sales_order_save_after>
+            <model_config_data_save_before>
+                <observers>
+                    <validate_api_key>
+                        <type>singleton</type>
+                        <class>Oyst_Oyst_Model_Observer</class>
+                        <method>validateApiKey</method>
+                    </validate_api_key>
+                </observers>
+            </model_config_data_save_before>
         </events>
         <layout>
             <updates>
@@ -139,7 +148,7 @@
                 <order_status>pending</order_status>
                 <payment_action>authorize_capture</payment_action>
                 <allowspecific>0</allowspecific>
-                <sort_order>100</sort_order>
+                <sort_order>0</sort_order>
             </oyst>
         </payment>
     </default>
