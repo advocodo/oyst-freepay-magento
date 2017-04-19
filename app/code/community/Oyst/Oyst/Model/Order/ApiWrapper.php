@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Order_ApiWrapper
  *
  * PHP version 5
@@ -20,7 +20,7 @@ class Oyst_Oyst_Model_Order_ApiWrapper extends Mage_Core_Model_Abstract
 
     /**
      * Retrieve order from Oyst
-     * 
+     *
      * @param Int $oystOrderId
      * @return array
      */
@@ -32,7 +32,7 @@ class Oyst_Oyst_Model_Order_ApiWrapper extends Mage_Core_Model_Abstract
 
     /**
      * Update Order Status to Oyst
-     * 
+     *
      * @param Int $oystOrderId
      * @param string $status
      * @return array

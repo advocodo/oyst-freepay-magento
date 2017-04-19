@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Payment_ApiWrapper
  *
  * PHP version 5
@@ -20,7 +20,7 @@ class Oyst_Oyst_Model_Payment_ApiWrapper extends Mage_Core_Model_Abstract
 
     /**
      * Make api call for retrieve Oyst url
-     * 
+     *
      * @param array $params
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Payment_Method_Oyst
  *
  * PHP version 5

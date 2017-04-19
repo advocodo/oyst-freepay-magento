@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Helper_Order_Data
  *
  * PHP version 5
@@ -32,7 +32,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Send order update to Oyst
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -54,7 +54,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Sync order from notification
-     * 
+     *
      * @param array $event
      * @param array $data
      * @return array
@@ -101,7 +101,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Do process of synchronisation
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -119,7 +119,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Import order from Oyst to Magento
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -169,7 +169,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
     /**
      * Init quote addresses
      * Warning : we don't have an order example to know if it will have a customer id
-     * 
+     *
      * @param array $params
      * @param Mage_Sales_Model_Quote $quote
      * @return Mage_Sales_Model_Quote
@@ -210,7 +210,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Transform Magento address to formated array
-     * 
+     *
      * @param Mage_Sales_Model_Quote_Address $address
      * @param string $type
      * @return array
@@ -299,10 +299,10 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Transform temporary cart to order
-     * 
+     *
      * @param array $params
      * @param Mage_Sales_Model_Quote $quote
-     * 
+     *
      * @return Mage_Sales_Model_Order
      */
     protected function _submitQuote($params, $quote)
@@ -315,7 +315,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Change Order Status
-     * 
+     *
      * @param array $params
      * @param Mage_Sales_Model_Order $order
      * @return Mage_Sales_Model_Order
@@ -348,7 +348,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Create Invoice for order
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -359,7 +359,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Cancel Order
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -370,7 +370,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Get config from Magento
-     * 
+     *
      * @param string $code
      * @return mixed
      */

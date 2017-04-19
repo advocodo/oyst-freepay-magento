@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Helper_Catalog_Data
  *
  * PHP version 5
@@ -20,7 +20,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Translate Product attribute for Oyst <-> Magento
-     * 
+     *
      * @var array
      */
     protected $_productAttrTranslate = array(
@@ -121,7 +121,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Object construct
-     * 
+     *
      * @return null
      */
     public function __construct()
@@ -133,7 +133,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Synchronisation process from notification controller
-     * 
+     *
      * @param array $event
      * @param array $data
      * @return number
@@ -210,7 +210,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Synchronisation process
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -235,7 +235,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Prepare Database Request with filters
-     * 
+     *
      * @param array $params
      * @return Mage_Catalog_Model_Resource_Product_Collection
      */
@@ -275,7 +275,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Transform Database Datas to formatd array
-     * 
+     *
      * @param Mage_Catalog_Model_Resource_Product_Collection $products
      * @return array
      */
@@ -311,7 +311,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Get product attributes
-     * 
+     *
      * @param Mage_Catalog_Model_Product $product
      * @param array $translateAttribute $this->_skusAttrTranslate || $this->_productAttrTranslate
      * @return array
@@ -368,7 +368,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Add complex attribute to product array
-     * 
+     *
      * @param Mage_Catalog_Model_Product $product
      * @param array of parent product
      * @return null
@@ -384,7 +384,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * add categories to product array
-     * 
+     *
      * @param Mage_Catalog_Model_Product $product
      * @param array of parent product
      * @return null
@@ -410,7 +410,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * add Shipments info for product
-     * 
+     *
      * @param Mage_Catalog_Model_Product $product
      * @param array of parent product
      * @return null
@@ -478,7 +478,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * add picture link of product
-     * 
+     *
      * @param Mage_Catalog_Model_Product $product
      * @param array of parent product
      * @return null
@@ -499,7 +499,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * add related product of parent product
-     * 
+     *
      * @param Mage_Catalog_Model_Product $product
      * @param array of parent product
      * @return null
@@ -513,7 +513,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Calcul of shipping tax
-     * 
+     *
      * @see Mage_Tax_Helper_Data::getShippingPrice()
      * @param int $price
      * @param bool $includingTax
@@ -537,7 +537,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Get config from Magento
-     * 
+     *
      * @param string $code
      * @return mixed
      */

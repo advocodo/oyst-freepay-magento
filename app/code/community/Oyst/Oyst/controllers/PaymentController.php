@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  * File containing class Oyst_Oyst_PaymentController
  *
  * PHP version 5

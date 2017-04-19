@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Catalog_ApiWrapper
  *
  * PHP version 5
@@ -20,7 +20,7 @@ class Oyst_Oyst_Model_Catalog_ApiWrapper extends Mage_Core_Model_Abstract
 
     /**
      * Send Product in post or put to api
-     * 
+     *
      * @param array $productsFormated
      * @param array $params
      * @return array

@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Resource_Notification
  *
  * PHP version 5

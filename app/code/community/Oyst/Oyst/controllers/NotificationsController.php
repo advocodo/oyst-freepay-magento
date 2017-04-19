@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_NotificationsController
  *
  * PHP version 5
@@ -19,7 +19,7 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
 {
     /**
      * Get notification for catalog, order and payment callback
-     * 
+     *
      * @return null
      */
     public function indexAction()

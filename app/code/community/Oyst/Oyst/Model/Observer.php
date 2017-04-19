@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Observer
  *
  * PHP version 5
@@ -21,7 +21,7 @@ class Oyst_Oyst_Model_Observer
 {
     /**
      * Add mass action on product grid
-     * 
+     *
      * @param Varien_Event_Observer $observer
      * @return Oyst_Oyst_Model_Observer
      */

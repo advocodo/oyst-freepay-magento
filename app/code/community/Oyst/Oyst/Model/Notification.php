@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Notification
  *
  * PHP version 5
@@ -30,7 +30,7 @@ class Oyst_Oyst_Model_Notification extends Mage_Core_Model_Abstract
 
     /**
      * Get last notification filter by type AND/OR id
-     * 
+     *
      * @param string $type
      * @param Int $dataId
      * @return Oyst_Oyst_Model_Notification

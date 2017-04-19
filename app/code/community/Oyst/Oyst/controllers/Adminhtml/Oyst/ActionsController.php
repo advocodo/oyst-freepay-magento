@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Adminhtml_Oyst_ActionsController
  *
  * PHP version 5
@@ -19,7 +19,7 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
 {
     /**
      * Test if user can access to this sections
-     * 
+     *
      * @return bool
      * @see Mage_Adminhtml_Controller_Action::_isAllowed()
      */
@@ -30,7 +30,7 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
 
     /**
      * Magento method for init layout, menu and breadcrumbs
-     * 
+     *
      * @return Oyst_Oyst_Adminhtml_Oyst_ActionsController
      */
     protected function _initAction()
@@ -41,7 +41,7 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
 
     /**
      * Active menu
-     * 
+     *
      * @return Oyst_Oyst_Adminhtml_Oyst_ActionsController
      */
     protected function _activeMenu()
@@ -55,7 +55,7 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
 
     /**
      * Print action page
-     * 
+     *
      * @retun null
      */
     public function indexAction()

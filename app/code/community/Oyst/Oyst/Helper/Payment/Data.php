@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Helper_Payment_Data
  *
  * PHP version 5
@@ -47,7 +47,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         $notification->save();
 
         //get order INCREMENT id
-        if(empty($data['order_increment_id'])) {
+        if (empty($data['order_increment_id'])) {
             Mage::throwException($this->__("order_id not found for payment id %s", $data['payment_id']));
         }
 
@@ -89,22 +89,23 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         //prepare invoice
         $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
 
-        //prepare invoice
+        //prepare transaction and create invoice
         if ($transactionData) {
             $this->_addTransaction($order->getId(), $transactionData);
+        } else {
+
+            //pay offline
+            $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
+            $invoice->register();
+
+            //don't notify customer
+            $invoice->getOrder()->setCustomerNoteNotify(false);
+            $invoice->getOrder()->setIsInProcess(true);
+
+            //save order and invoice
+            $transactionSave = Mage::getModel('core/resource_transaction')->addObject($invoice)->addObject($invoice->getOrder());
+            $transactionSave->save();
         }
-
-        //pay offline
-        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
-        $invoice->register();
-
-        //don't notify customer
-        $invoice->getOrder()->setCustomerNoteNotify(false);
-        $invoice->getOrder()->setIsInProcess(true);
-
-        //save order and invoice
-        $transactionSave = Mage::getModel('core/resource_transaction')->addObject($invoice)->addObject($invoice->getOrder());
-        $transactionSave->save();
 
         return array('order_id' => $order->getId());
     }
@@ -135,7 +136,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         $_order = Mage::getModel('sales/order')->load($orderId);
         $paymentId = !empty($transactionData["payment_id"]) ? $transactionData["payment_id"] : false;
 
-        if($_order->getId() && $paymentId) {
+        if ($_order->getId() && $paymentId) {
             $payment = $_order->getPayment();
             $amount = !empty($transactionData["amount"]) ? !empty($transactionData["amount"]["value"]) ? $transactionData["amount"]["value"] : 0 : 0;
 
@@ -159,7 +160,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Construct Oyst Secure Url
-     * 
+     *
      * @return string
      */
     public function getPaymentUrl()
@@ -171,7 +172,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Get url params
-     * 
+     *
      * @return array
      */
     protected function _constructParams()
@@ -191,7 +192,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Add amout to pay as param url
-     * 
+     *
      * @param array Url params
      * @return null
      */
@@ -206,7 +207,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Add return urls
-     * 
+     *
      * @param array $params
      * @param Int $order_id
      * @return null
@@ -226,7 +227,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Add customer infos
-     * 
+     *
      * @param array $params
      * @return null
      */
@@ -259,7 +260,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Get customer address datas in array
-     * 
+     *
      * @param Mage_Sales_Model_Quote_Address $address
      * @return array
      */
@@ -289,7 +290,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Get all optionalle customer information from quote
-     * 
+     *
      * @param Mage_Sales_Model_Quote $quote
      * @return array
      */

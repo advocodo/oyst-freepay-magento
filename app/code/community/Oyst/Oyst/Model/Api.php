@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Api
  *
  * PHP version 5
@@ -92,8 +92,8 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Api call to Oyst 
-     * 
+     * Api call to Oyst
+     *
      * @param string $type
      * @param array $dataFormated
      * @return array
@@ -155,7 +155,7 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
 
     /**
      * set curl opt, construct final $targetUrl and build Headers for POST catalog
-     * 
+     *
      * @param Resource $ch
      * @param string $targetUrl
      * @param string $apiKey
@@ -235,7 +235,7 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
 
     /**
      * Init 2 curl opt according to type
-     * 
+     *
      * @param Resource $ch
      * @param string $type
      * @param string $dataJson
@@ -250,7 +250,7 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
 
     /**
      * Return Headers for curl request
-     * 
+     *
      * @param string $apiKey
      * @param string $dataJson
      * @return array

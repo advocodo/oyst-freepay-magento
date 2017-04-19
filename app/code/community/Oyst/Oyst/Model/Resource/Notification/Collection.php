@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Model_Resource_Notification_Collection
  *
  * PHP version 5
@@ -30,7 +30,7 @@ class Oyst_Oyst_Model_Resource_Notification_Collection extends Mage_Core_Model_R
 
     /**
      * Add type filter to notifications list in db
-     * 
+     *
      * @param string $type
      * @param Int $dataId
      * @return Oyst_Oyst_Model_Resource_Notification_Collection

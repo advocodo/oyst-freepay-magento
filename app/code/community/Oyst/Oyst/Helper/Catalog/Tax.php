@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Helper_Catalog_Tax
  *
  * PHP version 5
@@ -19,7 +19,7 @@ class Oyst_Oyst_Helper_Catalog_Tax extends Mage_Tax_Helper_Data
 {
     /**
      * get price from product
-     * WARNING : Magento function rewrited 
+     * WARNING : Magento function rewrited
      *
      * @param   Mage_Catalog_Model_Product $product
      * @param   float $price inputed product price

@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Adminhtml_Oyst_CatalogController
  *
  * PHP version 5
@@ -19,7 +19,7 @@ class Oyst_Oyst_Adminhtml_Oyst_CatalogController extends Mage_Adminhtml_Controll
 {
     /**
      * Test if user can access to this sections
-     * 
+     *
      * @return bool
      * @see Mage_Adminhtml_Controller_Action::_isAllowed()
      */
@@ -55,7 +55,7 @@ class Oyst_Oyst_Adminhtml_Oyst_CatalogController extends Mage_Adminhtml_Controll
 
     /**
      * Synchronize product from Magento to Oyst
-     * 
+     *
      * @return Oyst_Oyst_Adminhtml_Oyst_CatalogController
      */
     public function syncAction()

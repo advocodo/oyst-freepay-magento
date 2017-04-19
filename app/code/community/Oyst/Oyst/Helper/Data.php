@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * File containing class Oyst_Oyst_Helper_Data
  *
  * PHP version 5
@@ -19,7 +19,7 @@ class Oyst_Oyst_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
      * Globale function for log if enabled
-     * 
+     *
      * @param string $message
      * @return null
      */
