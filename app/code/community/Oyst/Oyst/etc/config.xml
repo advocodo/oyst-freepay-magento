@@ -164,4 +164,11 @@
             </design>
         </admin>
     </stores>
+    <phpunit>
+        <suite>
+            <modules>
+                <Oyst_Oyst />
+            </modules>
+        </suite>
+    </phpunit>
 </config>
