@@ -10,7 +10,7 @@
                 <class>Oyst_Oyst_Model</class>
                 <resourceModel>oyst_oyst_resource</resourceModel>
             </oyst_oyst>
-             <oyst_oyst_resource>
+            <oyst_oyst_resource>
                 <class>Oyst_Oyst_Model_Resource</class>
                 <entities>
                     <notification>
@@ -19,6 +19,7 @@
                 </entities>
             </oyst_oyst_resource>
         </models>
+
         <resources>
             <oyst_oyst_setup>
                 <setup>
@@ -27,23 +28,19 @@
                 </setup>
             </oyst_oyst_setup>
         </resources>
-        <helpers>
-            <oyst_oyst>
-                <class>Oyst_Oyst_Helper</class>
-            </oyst_oyst>
-        </helpers>
-        <resources>
-            <oyst_oyst_setup>
-                <setup>
-                    <module>Oyst_Oyst</module>
-                </setup>
-            </oyst_oyst_setup>
-        </resources>
+
         <blocks>
             <oyst_oyst>
                 <class>Oyst_Oyst_Block</class>
             </oyst_oyst>
         </blocks>
+
+        <helpers>
+            <oyst_oyst>
+                <class>Oyst_Oyst_Helper</class>
+            </oyst_oyst>
+        </helpers>
+
         <fieldsets>
             <sales_convert_quote>
                 <oyst_order_id><to_order>*</to_order></oyst_order_id>
@@ -63,19 +60,6 @@
                 </args>
             </oyst_oyst>
         </routers>
-    </frontend>
-    <admin>
-        <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <oyst_oyst after="Mage_Adminhtml">Oyst_Oyst_Adminhtml</oyst_oyst>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers>
-    </admin>
-    <adminhtml>
         <translate>
             <modules>
                 <Oyst_Oyst>
@@ -85,6 +69,19 @@
                 </Oyst_Oyst>
             </modules>
         </translate>
+    </frontend>
+    <Admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <oyst_oyst after="Mage_Adminhtml">Oyst_Oyst_Adminhtml</oyst_oyst>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </Admin>
+    <adminhtml>
         <events>
             <adminhtml_catalog_product_grid_prepare_massaction>
                 <observers>
@@ -103,15 +100,6 @@
                     </oyst_sendproductupdate>
                 </observers>
             </catalog_product_save_after>
-            <sales_order_save_after>
-                <observers>
-                    <auto_invoice_order>
-                        <type>singleton</type>
-                        <class>Oyst_Oyst_Model_Observer</class>
-                        <method>sendOrderStatusUpdate</method>
-                    </auto_invoice_order>
-                </observers>
-            </sales_order_save_after>
             <model_config_data_save_before>
                 <observers>
                     <validate_api_key>
@@ -121,6 +109,15 @@
                     </validate_api_key>
                 </observers>
             </model_config_data_save_before>
+            <sales_order_save_after>
+                <observers>
+                    <auto_invoice_order>
+                        <type>singleton</type>
+                        <class>Oyst_Oyst_Model_Observer</class>
+                        <method>sendOrderStatusUpdate</method>
+                    </auto_invoice_order>
+                </observers>
+            </sales_order_save_after>
         </events>
         <layout>
             <updates>
@@ -129,19 +126,28 @@
                 </oyst_oyst>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <Oyst_Oyst>
+                    <files>
+                        <default>Oyst_Oyst.csv</default>
+                    </files>
+                </Oyst_Oyst>
+            </modules>
+        </translate>
     </adminhtml>
+
+    <!-- Default configuration values -->
     <default>
-        <oyst>
-            <catalog_settings>
-                <number_per_pack>1000</number_per_pack>
-            </catalog_settings>
-            <payment_settings>
-                <invoice_label>Oyst</invoice_label>
-                <secure_3ds_enable>1</secure_3ds_enable>
-            </payment_settings>
-        </oyst>
         <payment>
             <oyst>
+                <developed_by>Oyst</developed_by>
+                <contact_email>dev@oyst.com</contact_email>
+                <module_version>1.0.0</module_version>
+                <sdk_version>v1.1.0</sdk_version>
+                <enable_logs>1</enable_logs>
+                <title>Oyst</title>
+
                 <model>oyst_oyst/payment_method_oyst</model>
                 <active>1</active>
                 <title>Oyst Payment</title>
@@ -151,6 +157,19 @@
                 <sort_order>0</sort_order>
             </oyst>
         </payment>
+        <oyst>
+            <catalog_settings>
+                <number_per_pack>1000</number_per_pack>
+            </catalog_settings>
+            <payment_settings>
+                <invoice_label>Oyst</invoice_label>
+                <secure_3ds_enable>1</secure_3ds_enable>
+            </payment_settings>
+            <dev>
+                <register_autoloader>1</register_autoloader>
+                <autoloader_basepath>lib/Oyst/oyst-php</autoloader_basepath>
+            </dev>
+        </oyst>
     </default>
     <stores>
         <admin>
@@ -167,7 +186,7 @@
     <phpunit>
         <suite>
             <modules>
-                <Oyst_Oyst />
+                <Oyst_Oyst/>
             </modules>
         </suite>
     </phpunit>

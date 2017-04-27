@@ -7,311 +7,460 @@
         </oyst>
     </tabs>
     <sections>
-        <oyst translate="label" module="oyst_oyst">
-            <label>Oyst</label>
-            <tab>oyst</tab>
-            <frontend_type>text</frontend_type>
-            <sort_order>10</sort_order>
-            <show_in_default>1</show_in_default>
-            <show_in_website>1</show_in_website>
-            <show_in_store>1</show_in_store>
-            <groups>
-                <global_settings translate="label">
-                    <label>Global Settings</label>
-                    <sort_order>10</sort_order>
-                    <frontend_type>text</frontend_type>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <enable translate="label">
-                            <label>Enable</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </enable>
-                        <log_enable translate="label,comment">
-                            <label>Log enable</label>
-<!--                             <comment><![CDATA[Warning]]></comment> -->
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>1</enable>
-                            </depends>
-                        </log_enable>
-                        <api_login translate="label,comment">
-                            <label>Api login</label>
-<!--                             <comment><![CDATA[Warning]]></comment> -->
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>1</enable>
-                            </depends>
-                        </api_login>
-                        <api_url translate="label,comment">
-                            <label>Api url</label>
-                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>1</enable>
-                            </depends>
-                        </api_url>
-                        <notification_url translate="label,comment">
-                            <label>Notification url</label>
-                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>1</enable>
-                            </depends>
-                        </notification_url>
-                    </fields>
-                </global_settings>
-                <catalog_settings translate="label">
-                    <label>Catalog Settings</label>
-                    <sort_order>20</sort_order>
-                    <frontend_type>text</frontend_type>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <enable translate="label">
-                            <label>Enable</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </enable>
-                        <number_per_pack translate="label,comment">
-                            <label>Number Per Pack</label>
-<!--                             <comment><![CDATA[Separed by comma]]></comment> -->
-                            <frontend_type>text</frontend_type>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </number_per_pack>
-                    </fields>
-                </catalog_settings>
-                <order_settings translate="label">
-                    <label>Order Settings</label>
-                    <sort_order>30</sort_order>
-                    <frontend_type>text</frontend_type>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <enable translate="label">
-                            <label>Enable</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </enable>
-                    </fields>
-                </order_settings>
-                <payment_settings translate="label">
-                    <label>Payment Settings</label>
-                    <sort_order>40</sort_order>
-                    <frontend_type>text</frontend_type>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <invoice_label translate="label,comment">
-                            <label>Invoice Label</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </invoice_label>
-                        <secure_3ds_enable translate="label,comment">
-                            <label>3DS Secure</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </secure_3ds_enable>
-                        <cancel_url translate="label,comment">
-                            <label>Cancel Url</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </cancel_url>
-                        <error_url translate="label,comment">
-                            <label>Error Url</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </error_url>
-                        <return_url translate="label,comment">
-                            <label>Return Url</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
-                            <depends>
-                                <enable>
-                                    <fieldset>global_settings</fieldset>
-                                    <value>1</value>
-                                </enable>
-                            </depends>
-                        </return_url>
-                    </fields>
-                </payment_settings>
-            </groups>
-        </oyst>
         <payment>
             <groups>
                 <oyst translate="label comment" module="oyst_oyst">
-                    <label>Oyst Payement</label>
+                    <label>Oyst</label>
                     <sort_order>100</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <active translate="label">
-                            <label>Active</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        <!--=============== Module information (version, contact...) ================= -->
+                        <module_information translate="label">
+                            <label>MODULE INFORMATION</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>oyst_oyst/adminhtml_field_sectionTitle</frontend_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </active>
-                        <title translate="label">
-                            <label>Title</label>
-                            <frontend_type>text</frontend_type>
+                        </module_information>
+
+                        <!-- author -->
+                        <developed_by translate="label">
+                            <label>Developed by</label>
+                            <comment><![CDATA[<a href="http://www.oyst.com" target="_blank">www.oyst.com</a>]]></comment>
+                            <frontend_type>label</frontend_type>
+                            <config_path>payment/oyst/developed_by</config_path>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </developed_by>
+
+                        <!-- email -->
+                        <contact_email translate="label">
+                            <label>Contact email</label>
+                            <frontend_type>label</frontend_type>
+                            <config_path>payment/oyst/contact_email</config_path>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </contact_email>
+
+                        <!-- module version -->
+                        <module_version translate="label">
+                            <label>Module version</label>
+                            <frontend_type>label</frontend_type>
+                            <config_path>payment/oyst/module_version</config_path>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </module_version>
+
+                        <!-- sdk version -->
+                        <gateway_version translate="label">
+                            <label>Oyst SDK version</label>
+                            <comment><![CDATA[<a href="https://github.com/OystParis/oyst-php" target="_blank">OystParis/oyst-php</a>]]></comment>
+                            <frontend_type>label</frontend_type>
+                            <config_path>payment/oyst/sdk_version</config_path>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </gateway_version>
+
+                        <!-- reset -->
+                        <!--<init_module translate="label,button_label,comment">-->
+                            <!--<label>Reset the module</label>-->
+                            <!--<comment>Click this button to remove all previous parameters and/or reset the current module parameters.</comment>-->
+                            <!--<button_label>Reset</button_label>-->
+                            <!--<button_url><![CDATA[adminhtml/oyst_config/reset]]></button_url>-->
+                            <!--<frontend_model>oyst_oyst/adminhtml_field_initButton</frontend_model>-->
+                            <!--<sort_order>15</sort_order>-->
+                            <!--<show_in_default>1</show_in_default>-->
+                            <!--<show_in_website>1</show_in_website>-->
+                            <!--<show_in_store>1</show_in_store>-->
+                        <!--</init_module>-->
+
+                        <!-- enable module logs -->
+                        <!--<enable_logs translate="label">-->
+                            <!--<label>Logs</label>-->
+                            <!--<comment>Enable module logs.</comment>-->
+                            <!--<frontend_type>select</frontend_type>-->
+                            <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
+                            <!--<config_path>payment/oyst/enable_logs</config_path>-->
+                            <!--<sort_order>16</sort_order>-->
+                            <!--<show_in_default>1</show_in_default>-->
+                            <!--<show_in_website>1</show_in_website>-->
+                            <!--<show_in_store>1</show_in_store>-->
+                        <!--</enable_logs>-->
+
+
+
+                        <!--============================== Global Settings ================================ -->
+                        <global_settings translate="label">
+                            <label>GLOBAL SETTINGS</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>oyst_oyst/adminhtml_field_sectionTitle</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </title>
-                        <order_status translate="label">
-                            <label>New Order Status</label>
+                        </global_settings>
+
+                        <!-- enable -->
+                        <enable_global_settings translate="label">
+                            <label>Enabled</label>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
-                            <sort_order>30</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>oyst/global_settings/enable</config_path>
+                            <sort_order>21</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </order_status>
-                        <payment_action translate="label">
-                            <label>Automatically Invoice All Items</label>
+                        </enable_global_settings>
+
+                        <!-- enable module logs -->
+                        <log_enable translate="label">
+                            <label>Enable module logs</label>
                             <frontend_type>select</frontend_type>
-                            <source_model>payment/source_invoice</source_model>
-                            <sort_order>40</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>oyst/global_settings/log_enable</config_path>
+                            <sort_order>22</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
-                                <order_status separator=",">processing,processed_ogone</order_status>
+                                <enable_global_settings>1</enable_global_settings>
                             </depends>
-                        </payment_action>
-                        <allowspecific translate="label">
+                        </log_enable>
+
+                        <!-- api login -->
+                        <api_login translate="label">
+                            <label>API Key</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/global_settings/api_login</config_path>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </api_login>
+
+                        <!-- api url -->
+                        <api_url translate="label,comment">
+                            <label>API URL</label>
+                            <comment><![CDATA[Warning : url must finish by "/"]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/global_settings/api_url</config_path>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </api_url>
+
+                        <!-- notification url -->
+                        <notification_url translate="label,comment">
+                            <label>Notification URL</label>
+                            <comment><![CDATA[Warning : URL must finish by "/"]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/global_settings/notification_url</config_path>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </notification_url>
+
+
+
+                        <!--============================== Freepay Settings ================================ -->
+                        <free_settings translate="label">
+                            <label>FREEPAY SETTINGS</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>oyst_oyst/adminhtml_field_sectionTitleFreepay</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </free_settings>
+
+                        <!-- freepay active url -->
+                        <freepay_active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/oyst/active</config_path>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </freepay_active>
+
+                        <!-- freepay title -->
+                        <freepay_title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>payment/oyst/title</config_path>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                                <freepay_active>1</freepay_active>
+                            </depends>
+                        </freepay_title>
+
+                        <!-- freepay order status -->
+                        <freepay_order_status translate="label">
+                            <label>New Order Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
+                            <config_path>payment/oyst/order_status</config_path>
+                            <sort_order>33</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                                <freepay_active>1</freepay_active>
+                            </depends>
+                        </freepay_order_status>
+
+                        <!-- freepay payment action -->
+                        <freepay_payment_action translate="label">
+                            <label>Automatically Invoice All Items</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payment/source_invoice</source_model>
+                            <config_path>payment/oyst/payment_action</config_path>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <order_status separator=",">processing,processed_freepay</order_status>
+                            </depends>
+                        </freepay_payment_action>
+
+                        <!-- freepay allow specific -->
+                        <freepay_allowspecific translate="label">
                             <label>Payment Applicable From</label>
                             <frontend_type>select</frontend_type>
-                            <sort_order>50</sort_order>
+                            <config_path>payment/oyst/allowspecific</config_path>
+                            <sort_order>35</sort_order>
                             <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </allowspecific>
-                        <specificcountry translate="label">
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                                <freepay_active>1</freepay_active>
+                            </depends>
+                        </freepay_allowspecific>
+
+                        <!-- freepay specific country -->
+                        <freepay_specificcountry translate="label">
                             <label>Countries Payment Applicable From</label>
                             <frontend_type>multiselect</frontend_type>
-                            <sort_order>60</sort_order>
+                            <config_path>payment/oyst/specificcountry</config_path>
+                            <sort_order>36</sort_order>
                             <source_model>adminhtml/system_config_source_country</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
-                                <allowspecific>1</allowspecific>
+                                <enable_global_settings>1</enable_global_settings>
+                                <freepay_allowspecific>1</freepay_allowspecific>
                             </depends>
-                        </specificcountry>
-                        <sort_order translate="label">
+                        </freepay_specificcountry>
+
+                        <!-- freepay sort order -->
+                        <freepay_sort_order translate="label">
                             <label>Sort Payment List</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>70</sort_order>
+                            <config_path>payment/oyst/sort_order</config_path>
+                            <sort_order>37</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <frontend_class>validate-number</frontend_class>
-                        </sort_order>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                                <freepay_active>1</freepay_active>
+                            </depends>
+                        </freepay_sort_order>
+
+
+
+                        <!--============================== Catalog Settings ================================ -->
+                        <catalog_settings translate="label">
+                            <label>CATALOG SETTINGS</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>oyst_oyst/adminhtml_field_sectionTitle</frontend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </catalog_settings>
+
+                        <!-- enable -->
+                        <enable_catalog_settings translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>oyst/catalog_settings/enable</config_path>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </enable_catalog_settings>
+
+                        <!-- number per pack -->
+                        <number_per_pack translate="label">
+                            <label>Number Per Pack</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/catalog_settings/number_per_pack</config_path>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_catalog_settings>1</enable_catalog_settings>
+                            </depends>
+                        </number_per_pack>
+
+
+
+                        <!--============================== Order Settings ================================ -->
+                        <order_settings translate="label">
+                            <label>ORDER SETTINGS</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>oyst_oyst/adminhtml_field_sectionTitle</frontend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </order_settings>
+
+                        <!-- enable -->
+                        <enable_order_settings translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>oyst/order_settings/enable</config_path>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </enable_order_settings>
+
+
+
+                        <!--============================== Payment Settings ================================ -->
+                        <payment_settings translate="label">
+                            <label>ORDER SETTINGS</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>oyst_oyst/adminhtml_field_sectionTitle</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_settings>
+
+                        <!-- invoice label -->
+                        <invoice_label translate="label">
+                            <label>Invoice Label</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/payment_settings/invoice_label</config_path>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </invoice_label>
+
+                        <!-- secure 3ds enable -->
+                        <secure_3ds_enable translate="label">
+                            <label>3DS Secure</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>oyst/payment_settings/secure_3ds_enable</config_path>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </secure_3ds_enable>
+
+                        <!-- cancel url -->
+                        <cancel_url translate="label,comment">
+                            <label>Cancel URL</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/payment_settings/cancel_url</config_path>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Warning : URL must finish by "/"]]></comment>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </cancel_url>
+
+                        <!-- error url -->
+                        <error_url translate="label,comment">
+                            <label>Error URL</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/payment_settings/error_url</config_path>
+                            <sort_order>64</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Warning : URL must finish by "/"]]></comment>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </error_url>
+
+                        <!-- return url -->
+                        <return_url translate="label,comment">
+                            <label>Return URL</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>oyst/payment_settings/return_url</config_path>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Warning : URL must finish by "/"]]></comment>
+                            <depends>
+                                <enable_global_settings>1</enable_global_settings>
+                            </depends>
+                        </return_url>
                     </fields>
                 </oyst>
             </groups>
