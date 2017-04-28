@@ -146,11 +146,9 @@
                 <module_version>1.0.0</module_version>
                 <sdk_version>v1.1.0</sdk_version>
                 <enable_logs>1</enable_logs>
-                <title>Oyst</title>
 
-                <model>oyst_oyst/payment_method_oyst</model>
                 <active>1</active>
-                <title>Oyst Payment</title>
+                <title>Payer par carte bancaire</title>
                 <order_status>pending</order_status>
                 <payment_action>authorize_capture</payment_action>
                 <allowspecific>0</allowspecific>
