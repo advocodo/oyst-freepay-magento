@@ -11,11 +11,10 @@
 
 /**
  * Custom renderer for the Oyst section title
- * @package Oyst_Oyst
+ * Adminhtml_Field_SectionTitle Block
  */
 class Oyst_Oyst_Block_Adminhtml_Field_SectionTitle extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-
     /**
      * Enter description here...
      *

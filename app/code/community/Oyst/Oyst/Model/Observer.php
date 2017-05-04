@@ -1,31 +1,27 @@
 <?php
-
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Model_Observer
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- *
- * @category Onibi
- * @class Oyst_Oyst_Model_Observer
+ * Observer Model
  */
-class Oyst_Oyst_Model_Observer
+class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
 {
     /**
      * Add mass action on product grid
      *
      * @param Varien_Event_Observer $observer
+     *
      * @return Oyst_Oyst_Model_Observer
      */
-    public function addCatalogMassAction($observer)
+    public function addCatalogMassAction(Varien_Event_Observer $observer)
     {
         // get MassAction blog from admin
         $block = $observer->getEvent()->getBlock();
@@ -42,9 +38,10 @@ class Oyst_Oyst_Model_Observer
      * Update product event
      *
      * @param Varien_Event_Observer $observer
+     *
      * @return Oyst_Oyst_Model_Observer
      */
-    public function sendProductUpdate($observer)
+    public function sendProductUpdate(Varien_Event_Observer $observer)
     {
         if (!$this->_getConfig("catalog", "enable")) {
             return $this;
@@ -64,6 +61,7 @@ class Oyst_Oyst_Model_Observer
         // send product updates to Oyst
         Mage::helper('oyst_oyst/catalog_data')->sync($params);
         Mage::helper('oyst_oyst')->log('end of update of product id : ' . $productId);
+
         return $this;
     }
 
@@ -71,9 +69,10 @@ class Oyst_Oyst_Model_Observer
      * Update order status event
      *
      * @param Varien_Event_Observer $observer
+     *
      * @return Oyst_Oyst_Model_Observer
      */
-    public function sendOrderStatusUpdate($observer)
+    public function sendOrderStatusUpdate(Varien_Event_Observer $observer)
     {
         // if it's not while order import
         if (!$this->_getConfig("order", "enable") || Mage::registry('order_status_changing')) {
@@ -81,8 +80,8 @@ class Oyst_Oyst_Model_Observer
         }
         
         $order = $observer->getOrder();
-        if ($state = $order->getState() != $order->getOrigData('state')) {
-            $oystStatus = '';
+        $state = $order->getState();
+        if ($order->getOrigData('state') != $state) {
             switch ($state) {
                 case Mage_Sales_Model_Order::STATE_NEW:
                 case Mage_Sales_Model_Order::STATE_PENDING_PAYMENT:
@@ -100,6 +99,8 @@ class Oyst_Oyst_Model_Observer
                 case Mage_Sales_Model_Order::STATE_CLOSED:
                     $oystStatus = 'refunded';
                     break;
+                default:
+                    $oystStatus = '';
             }
         }
         Mage::helper('oyst_oyst')->log('Start of update of order id : ' . $order->getId());
@@ -110,10 +111,11 @@ class Oyst_Oyst_Model_Observer
             'status' => $oystStatus
         ));
         Mage::helper('oyst_oyst')->log('End of update of order id : ' . $order->getId());
+
         return $this;
     }
     
-    public function validateApiKey($observer)
+    public function validateApiKey(Varien_Event_Observer $observer)
     {
         $config = $observer->getEvent()->getObject();
         if ($config->getSection() != "oyst") {
@@ -142,6 +144,7 @@ class Oyst_Oyst_Model_Observer
      * Get config from Magento
      *
      * @param string $code
+     *
      * @return mixed
      */
     protected function _getConfig($section, $code)

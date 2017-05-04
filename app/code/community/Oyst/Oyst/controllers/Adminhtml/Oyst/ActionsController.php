@@ -1,19 +1,16 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Adminhtml_Oyst_ActionsController
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Adminhtml_Oyst_ActionsController
+ * Oyst_Actions Controller
  */
 class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controller_Action
 {
@@ -36,6 +33,7 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
     protected function _initAction()
     {
         $this->_activeMenu();
+
         return $this;
     }
 
@@ -50,6 +48,7 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
             ->_setActiveMenu('oyst/oyst_actions')
             ->_title(Mage::helper('oyst_oyst')->__('Actions'))
             ->_addBreadcrumb(Mage::helper('oyst_oyst')->__('Actions'), Mage::helper('oyst_oyst')->__('Actions'));
+
         return $this;
     }
 

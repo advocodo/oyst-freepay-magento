@@ -11,7 +11,7 @@
 
 /**
  * Custom renderer for the Oyst init button
- * @package Oyst_Oyst
+ * Adminhtml_Field_InitButton Block
  */
 class Oyst_Oyst_Block_Adminhtml_Field_InitButton extends Mage_Adminhtml_Block_System_Config_Form_Field
 {

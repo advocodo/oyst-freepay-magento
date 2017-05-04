@@ -1,19 +1,18 @@
 <?php
+// @codingStandardsIgnoreFile
+
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Helper_Catalog_Tax
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Helper_Catalog_Tax
+ * Catalog_Tax Helper
  */
 class Oyst_Oyst_Helper_Catalog_Tax extends Mage_Tax_Helper_Data
 {
@@ -150,6 +149,7 @@ class Oyst_Oyst_Helper_Catalog_Tax extends Mage_Tax_Helper_Data
         if ($roundPrice) {
             return $store->roundPrice($price);
         }
+
         return $price;
     }
 }

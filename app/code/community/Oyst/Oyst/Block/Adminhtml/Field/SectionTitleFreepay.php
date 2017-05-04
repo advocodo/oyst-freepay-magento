@@ -11,18 +11,17 @@
 
 /**
  * Custom renderer for the Oyst section title
- * @package Oyst_Oyst
+ * Adminhtml_Field_SectionTitleFreepay Block
  */
 class Oyst_Oyst_Block_Adminhtml_Field_SectionTitleFreepay extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-
     /**
      * Enter description here...
      *
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
-    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
+    protected function _getElementHtml()
     {
         $html = '<div style="background-color: #D1DEDF; border: 1px solid #849BA3; height: 36px; padding-top: 5px;">';
         $html .= '<svg style="font-size: 8rem;" x="0px" y="0px" width="1em" height="0.25em" viewBox="0 0 119 32" style="enable-background:new 0 0 119 32;" xml:space="preserve">

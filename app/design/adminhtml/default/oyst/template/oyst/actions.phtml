@@ -1,3 +1,14 @@
+<?php
+/**
+ * This file is part of Oyst_Oyst for Magento.
+ *
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
+ */
+?>
 <div class='content-header'>
     <table cellspacing='0'>
         <tbody>
@@ -10,18 +21,19 @@
 
 <div id='action-button-container'>
     <p><?php echo Mage::helper('oyst_oyst')->__("To sync Catalog products with Oyst, click Here : ") ?></p>
-    <button onclick="goToThis('<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/oyst_catalog/sync') ?>');" type='submit' class='scalable task' style=''>
-        <span> <span> <span><?php echo Mage::helper('oyst_oyst')->__('Oyst product sync')?></span>
+    <button onclick="goToThis('<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/oyst_catalog/sync') ?>');"
+            type='submit' class='scalable task' style=''>
+        <span> <span> <span><?php echo Mage::helper('oyst_oyst')->__('Oyst product sync') ?></span>
         </span>
         </span>
     </button>
-    <br /> <br /> <br />
+    <br/><br/><br/>
 </div>
 
 <script type='text/javascript'>
-function goToThis(url) {
-    Element.show('loading-mask');
-    window.location.href = url;
-    //Element.hide('loading-mask');
-};
+    function goToThis(url) {
+        Element.show('loading-mask');
+        window.location.href = url;
+        //Element.hide('loading-mask');
+    };
 </script>

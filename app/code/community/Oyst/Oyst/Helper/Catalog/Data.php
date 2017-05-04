@@ -1,23 +1,19 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Helper_Catalog_Data
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Helper_Catalog_Data
+ * Catalog_Data Helper
  */
 class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 {
-
     /**
      * Translate Product attribute for Oyst <-> Magento
      *
@@ -150,7 +146,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
         //if last notification finish but with same id
         if ($lastNotification->getId() && $lastNotification->getImportRemaining() <= 0) {
-            $response['total_count'] = Mage::getModel('catalog/product')->getCollection()->count();
+            $response['total_count'] = Mage::getModel('catalog/product')->getCollection()->getSize();
             $response['import_id'] = $data['import_id'];
             $response['remaining'] = 0;
             return $response;
@@ -192,7 +188,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
         //set param for db
         $response['import_id'] = $data['import_id'];
-        $response['total_count'] = Mage::getModel('catalog/product')->getCollection()->count();
+        $response['total_count'] = Mage::getModel('catalog/product')->getCollection()->getSize();
         $done = $response['total_count'] - count($excludedProductsId) - count($result['imported_product_ids']);
         $response['remaining'] = ($done <= 0) ? 0 : $done;
 
@@ -230,6 +226,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
         //sync api
         $response = Mage::getModel('oyst_oyst/catalog_apiWrapper')->sendProduct($productsFormated, $params);
         $response['imported_product_ids'] = $importedProductIds;
+
         return $response;
     }
 
@@ -270,6 +267,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
         $collection->joinField('backorders', 'cataloginventory/stock_item', 'backorders', 'product_id=entity_id', '{{table}}.stock_id=1', 'left');
         $collection->joinField('min_sale_qty', 'cataloginventory/stock_item', 'min_sale_qty', 'product_id=entity_id', '{{table}}.stock_id=1', 'left');
         $collection->getSelect()->order('FIELD(type_id, "configurable", "grouped", "simple", "downloadable", "virtual", "bundle")');
+
         return $collection;
     }
 
@@ -306,6 +304,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
             $productsFormated['products'][] = $attributes;
         }
         $productsFormated['imported_product_ids'] = $importedProductIds;
+
         return $productsFormated;
     }
 
@@ -341,6 +340,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
                 $attributes[$simpleAttribute['name']] = $data;
             }
         }
+
         return $attributes;
     }
 
@@ -363,6 +363,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
             $attributes['skus'][] = $simpleAttributes;
             $productIds[] = $simpleProduct->getId();
         }
+
         return $productIds;
     }
 
@@ -417,7 +418,8 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
      */
     protected function _addShipments($product, &$attributes)
     {
-        //@TODO make multi-device and multi-store
+        // @codingStandardsIgnoreLine
+        // @todo make multi-device and multi-store
         $country = 'FR';
         $qty = 1;
         $currency = 'EUR';
@@ -468,7 +470,8 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
             $attributes['shipments'][$index]['quantity'] = $qty;
             $attributes['shipments'][$index]['method'] = $method->getCarrierTitle();
             $attributes['shipments'][$index]['carrier'] = $_code;
-            $attributes['shipments'][$index]['delay'] = 0; // TODO Required but nothing in magento
+            // @codingStandardsIgnoreLine
+            $attributes['shipments'][$index]['delay'] = 0; // @todo Required but nothing in magento
             $attributes['shipments'][$index]['shipment_amount']['value'] = $value;
             $attributes['shipments'][$index]['shipment_amount']['currency'] = $currency;
             $attributes['shipments'][$index]['vat'] = $tax; // required

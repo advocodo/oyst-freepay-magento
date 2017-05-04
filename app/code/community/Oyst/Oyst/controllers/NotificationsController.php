@@ -1,19 +1,16 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_NotificationsController
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_NotificationsController
+ * Notifications Controller
  */
 class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Action
 {
@@ -26,6 +23,7 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
     {
         $event = $this->getRequest()->getPost('event');
         $data = $this->getRequest()->getPost('data');
+        // @codingStandardsIgnoreLine
         $post = (array) Zend_Json::decode(str_replace("\n", '', file_get_contents('php://input')));
         //set the type and data from notification url
         if (empty($event) && empty($data) && !empty($post)) {
@@ -45,8 +43,12 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
         }
 
         if (empty($post) || empty($data) || empty($event)) {
-            header('HTTP/1.0 400 Bad Request', true, 400);
-            exit();
+            $this->getResponse()
+                ->clearHeaders()
+                ->setHeader('HTTP/1.1', '400 Bad Request')
+                ->sendResponse();
+
+            return $this;
         }
         if ($event == 'products.import') {
             $helperName = 'oyst_oyst/catalog_data';
@@ -58,8 +60,12 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
 
         $helper = Mage::helper($helperName);
         if (!$helper) {
-            header('HTTP/1.0 400 Bad Request', true, 400);
-            exit();
+            $this->getResponse()
+                ->clearHeaders()
+                ->setHeader('HTTP/1.1', '400 Bad Request')
+                ->sendResponse();
+
+            return $this;
         }
         $result = $helper->syncFromNotification($event, $data);
         $this->getResponse()->setBody(Zend_Json::encode($result));

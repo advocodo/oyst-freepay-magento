@@ -1,23 +1,19 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Helper_Order_Data
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Helper_Order_Data
+ * Order_Data Helper
  */
 class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 {
-
     /**
      * Object construct
      *
@@ -49,6 +45,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         }
 
         $response = Mage::getModel('oyst_oyst/order_apiWrapper')->putOrder($oystOrderId, $status);
+
         return $response;
     }
 
@@ -114,6 +111,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         //save order in Magento
         $order = $this->_importOrder($response);
         $response['magento_order_id'] = $order->getId();
+
         return $response;
     }
 
@@ -146,6 +144,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         //change status of order if need to be invoice
         $order = $this->_changeStatus($params, $order);
         Mage::unregister('order_status_changing');
+
         return $order;
     }
 
@@ -158,11 +157,13 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
      */
     protected function _initQuote($params)
     {
-        //@TODO multi products
+        // @codingStandardsIgnoreLine
+        // @todo multi products
         $product = Mage::getModel('catalog/product')->load($params['product_id']);
         $quote = Mage::getModel('sales/quote')->setIsSuperMode(true);
         $quote->addProduct($product, $params['quantity']);
         $quote->setOystOrderId($params['id']);
+
         return $quote;
     }
 
@@ -196,7 +197,8 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         $shippingAddress->addData($shippingInfoFormated);
 
         //force shipping method to free shipping
-        //@TODO set real shipping method
+        // @codingStandardsIgnoreLine
+        // @todo set real shipping method
         $shippingAddress = $shippingAddress->setShippingMethod('freeshipping_freeshipping')
             ->setCollectShippingRates(true)
             ->collectShippingRates();
@@ -239,6 +241,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
             $formatedAddress['use_for_shipping'] = '1';
             $formatedAddress['same_as_billing'] = '0';
         }
+
         return $formatedAddress;
     }
 
@@ -294,6 +297,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
                 ->setCustomerIsGuest(false)
                 ->save();
         }
+
         return $quote;
     }
 
@@ -310,6 +314,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         $service = Mage::getModel('sales/service_quote', $quote);
         $service->submitAll();
         $order = $service->getOrder();
+
         return $order;
     }
 
@@ -343,6 +348,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
             ));
             $order = $order->load($result['order_id']);
         }
+
         return $order;
     }
 

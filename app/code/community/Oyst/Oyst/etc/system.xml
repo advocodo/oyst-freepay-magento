@@ -142,6 +142,7 @@
                         <!-- api login -->
                         <api_login translate="label">
                             <label>API Key</label>
+                            <validate>required-entry validate-length maximum-length-64 minimum-length-64</validate>
                             <frontend_type>text</frontend_type>
                             <config_path>oyst/global_settings/api_login</config_path>
                             <sort_order>23</sort_order>
@@ -156,6 +157,7 @@
                         <!-- api url -->
                         <api_url translate="label,comment">
                             <label>API URL</label>
+                            <validate>required-entry</validate>
                             <comment><![CDATA[Warning : url must finish by "/"]]></comment>
                             <frontend_type>text</frontend_type>
                             <config_path>oyst/global_settings/api_url</config_path>
@@ -171,6 +173,7 @@
                         <!-- notification url -->
                         <notification_url translate="label,comment">
                             <label>Notification URL</label>
+                            <validate>required-entry</validate>
                             <comment><![CDATA[Warning : URL must finish by "/"]]></comment>
                             <frontend_type>text</frontend_type>
                             <config_path>oyst/global_settings/notification_url</config_path>

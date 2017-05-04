@@ -1,23 +1,19 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Model_Order_ApiWrapper
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Model_Order_ApiWrapper
+ * Order_ApiWrapper Model
  */
 class Oyst_Oyst_Model_Order_ApiWrapper extends Mage_Core_Model_Abstract
 {
-
     /**
      * Retrieve order from Oyst
      *
@@ -27,6 +23,7 @@ class Oyst_Oyst_Model_Order_ApiWrapper extends Mage_Core_Model_Abstract
     public function getOrder($oystOrderId)
     {
         $response = Mage::getModel('oyst_oyst/api')->send(Oyst_Oyst_Model_Api::TYPE_GETORDER, $oystOrderId);
+
         return $response;
     }
 
@@ -48,6 +45,7 @@ class Oyst_Oyst_Model_Order_ApiWrapper extends Mage_Core_Model_Abstract
         } else {
             $response = Mage::helper('oyst_oyst')->__("order id %s or status %s not found", $oystOrderId, $status);
         }
+
         return $response;
     }
 }

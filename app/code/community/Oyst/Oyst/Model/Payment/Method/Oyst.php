@@ -1,19 +1,16 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Model_Payment_Method_Oyst
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Model_Payment_Method_Oyst
+ * Payment_Method_Oyst Model
  */
 class Oyst_Oyst_Model_Payment_Method_Oyst extends Mage_Payment_Model_Method_Abstract
 {
@@ -48,6 +45,7 @@ class Oyst_Oyst_Model_Payment_Method_Oyst extends Mage_Payment_Model_Method_Abst
     public function getOrderPlaceRedirectUrl()
     {
         $url = Mage::helper('oyst_oyst/payment_data')->getPaymentUrl();
+
         return $url;
     }
 }

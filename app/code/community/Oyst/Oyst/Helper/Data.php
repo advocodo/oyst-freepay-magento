@@ -1,26 +1,24 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Helper_Data
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Helper_Data
+ * Data Helper
  */
 class Oyst_Oyst_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
-     * Globale function for log if enabled
+     * Global function for log if enabled
      *
      * @param string $message
+     *
      * @return null
      */
     public function log($message)

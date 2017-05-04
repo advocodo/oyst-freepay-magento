@@ -1,28 +1,25 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Helper_Payment_Data
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Helper_Payment_Data
+ * Payment_Data Helper
  */
 class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 {
-
     /**
      * Sync payment informations from notification
      *
      * @param array $event
      * @param array $data
+     *
      * @return array
      */
     public function syncFromNotification($event, $data)
@@ -79,6 +76,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Create Invoice for order
      *
      * @param array $params
+     *
      * @return array
      */
     public function invoice($params, $transactionData = false)
@@ -114,12 +112,14 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Cancel Order
      *
      * @param array $params
+     *
      * @return array
      */
     public function cancel($params)
     {
         $order = Mage::getModel('sales/order')->load($params['order_increment_id'], 'increment_id');
         $order->cancel()->save();
+
         return array(
             'order_id' => $order->getId()
         );
@@ -167,6 +167,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     {
         $params = $this->_constructParams();
         $response = Mage::getModel('oyst_oyst/payment_apiWrapper')->getPaymentUrl($params);
+
         return $response;
     }
 
@@ -179,12 +180,11 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     {
         $order_increment_id = Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
         $params['order_id'] = $order_increment_id;
-        $params['notification_url'] = Mage::getStoreConfig('oyst/global_settings/notification_url') . 'order_increment_id' . DS . $order_increment_id;
         $params['is_3d'] = (bool) $this->_getConfig('secure_3ds_enable');
         $params['label'] = $this->_getConfig('invoice_label');
 
         $this->_addAmount($params);
-        $this->_addRedirectsInfos($params, $order_increment_id);
+        $this->_addUrls($params, $order_increment_id);
         $this->_addUserInfos($params);
 
         return $params;
@@ -194,6 +194,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Add amout to pay as param url
      *
      * @param array Url params
+     *
      * @return null
      */
     protected function _addAmount(&$params)
@@ -206,22 +207,25 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Add return urls
+     * Add urls
      *
      * @param array $params
      * @param Int $order_id
+     *
      * @return null
      */
-    protected function _addRedirectsInfos(&$params, $order_id)
+    protected function _addUrls(&$params, $order_id)
     {
+        $notificationUrl = Mage::getStoreConfig('oyst/global_settings/notification_url') . 'order_increment_id' . DS . $order_id;
         $cancelUrl = $this->_getConfig('cancel_url') . 'order_increment_id' . DS . $order_id;
         $errorUrl = $this->_getConfig('error_url') . 'order_increment_id' . DS . $order_id;
         $returnUrl = $this->_getConfig('return_url') . 'order_increment_id' . DS . $order_id;
 
-        $params['redirects'] = array(
-            'cancel_url' => $cancelUrl,
-            'error_url' => $errorUrl,
-            'return_url' => $returnUrl
+        $params['urls'] = array(
+            'notification' => $notificationUrl,
+            'cancel' => $cancelUrl,
+            'error' => $errorUrl,
+            'return' => $returnUrl
         );
     }
 
@@ -229,6 +233,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Add customer infos
      *
      * @param array $params
+     *
      * @return null
      */
     protected function _addUserInfos(&$params)
@@ -262,6 +267,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Get customer address datas in array
      *
      * @param Mage_Sales_Model_Quote_Address $address
+     *
      * @return array
      */
     protected function _getAddresses($address)
@@ -285,6 +291,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
                 $param['label'] = $address->getAddressType();
             }
         }
+
         return $param;
     }
 
@@ -292,6 +299,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Get all optionalle customer information from quote
      *
      * @param Mage_Sales_Model_Quote $quote
+     *
      * @return array
      */
     protected function _getCustomerInfosFromQuote($quote)
@@ -302,6 +310,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
                 $attr[$key] = $data;
             }
         }
+
         return $attr;
     }
 
@@ -309,6 +318,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Get config from Magento
      *
      * @param string $code
+     *
      * @return mixed
      */
     protected function _getConfig($code)

@@ -49,6 +49,19 @@
                 <oyst_order_id><to_quote>*</to_quote></oyst_order_id>
             </sales_convert_order>
         </fieldsets>
+
+        <events>
+            <!-- Support the lib/Oyst/oyst-php folder -->
+            <controller_front_init_before>
+                <observers>
+                    <oyst_lib_load>
+                        <type>object</type>
+                        <class>Oyst_Oyst_Helper_Autoloader</class>
+                        <method>createAndRegister</method>
+                    </oyst_lib_load>
+                </observers>
+            </controller_front_init_before>
+        </events>
     </global>
     <frontend>
         <routers>
@@ -146,6 +159,8 @@
                 <module_version>1.0.0</module_version>
                 <sdk_version>v1.1.0</sdk_version>
                 <enable_logs>1</enable_logs>
+
+                <model>oyst_oyst/payment_method_oyst</model>
 
                 <active>1</active>
                 <title>Payer par carte bancaire</title>

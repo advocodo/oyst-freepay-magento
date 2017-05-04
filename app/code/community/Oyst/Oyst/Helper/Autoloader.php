@@ -1,0 +1,71 @@
+<?php
+/**
+ * This file is part of Oyst_Oyst for Magento.
+ *
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
+ */
+
+/**
+ * Autoloader Helper
+ */
+class Oyst_Oyst_Helper_Autoloader
+{
+    /**
+     * An associative array where the key is a namespace prefix and the value
+     * is an array of base directories for classes in that namespace.
+     *
+     * @var array
+     */
+    protected $prefixes = array();
+
+    /*
+     * Validate the use of autoload
+     */
+    public static function createAndRegister()
+    {
+        if (self::_getStoreConfig('oyst/dev/register_autoloader')) {
+            $libBaseDir = self::_getStoreConfig('oyst/dev/autoloader_basepath');
+            if ($libBaseDir[0] !== '/') {
+                $libBaseDir = Mage::getBaseDir() . DS . $libBaseDir;
+            }
+            self::loadComposerAutoLoad($libBaseDir);
+        }
+    }
+
+    /**
+     * Load Composer autoload from lib oyst vendor folder
+     *
+     * @param $libBaseDir   Path of the Magento lib folder
+     */
+    public static function loadComposerAutoLoad($libBaseDir)
+    {
+        static $registered = false;
+        if (!$registered) {
+            // @codingStandardsIgnoreLine
+            require_once $libBaseDir . DS . 'vendor' . DS . 'autoload.php';
+            $registered = true;
+        }
+    }
+
+    /**
+     * Load store config first in case we are in update mode, where store config would not be available
+     *
+     * @param $path
+     *
+     * @return bool
+     */
+    protected static function _getStoreConfig($path)
+    {
+        static $configLoaded = false;
+        if (! $configLoaded && Mage::app()->getUpdateMode()) {
+            Mage::getConfig()->loadDb();
+            $configLoaded = true;
+        }
+
+        return Mage::getStoreConfig($path);
+    }
+}

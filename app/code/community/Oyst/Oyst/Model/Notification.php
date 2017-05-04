@@ -1,23 +1,19 @@
 <?php
 /**
+ * This file is part of Oyst_Oyst for Magento.
  *
- * File containing class Oyst_Oyst_Model_Notification
- *
- * PHP version 5
- *
- * @category Onibi
- * @author   Onibi <dev@onibi.fr>
- * @license  Copyright 2017, Onibi
- * @link     http://www.onibi.fr
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
  */
 
 /**
- * @category Onibi
- * @class  Oyst_Oyst_Model_Notification
+ * Notification Model
  */
 class Oyst_Oyst_Model_Notification extends Mage_Core_Model_Abstract
 {
-
     /**
      * Object construct
      *
@@ -37,7 +33,13 @@ class Oyst_Oyst_Model_Notification extends Mage_Core_Model_Abstract
      */
     public function getLastNotification($type = false, $dataId = false)
     {
-        $collection = $this->getCollection()->addDataIdToFilter($type, $dataId);
+        $collection = $this->getCollection()
+            ->addDataIdToFilter($type, $dataId)
+            ->setPageSize(1)
+            ->setCurPage(1)
+            ->load();
+
+        // @codingStandardsIgnoreLine
         return $collection->getFirstItem();
     }
 }
