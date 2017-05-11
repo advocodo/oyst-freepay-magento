@@ -38,10 +38,13 @@ class Oyst_Oyst_Model_Order_ApiWrapper extends Mage_Core_Model_Abstract
     {
         //if order id => update to Oyst
         if ($oystOrderId && $status) {
-            $response = Mage::getModel('oyst_oyst/api')->send(Oyst_Oyst_Model_Api::TYPE_PUTORDER, array(
-                'oyst_order_id' => $oystOrderId,
-                'status' => $status
-            ));
+            $response = Mage::getModel('oyst_oyst/api')->send(
+                Oyst_Oyst_Model_Api::TYPE_PUTORDER,
+                array(
+                    'oyst_order_id' => $oystOrderId,
+                    'status' => $status
+                )
+            );
         } else {
             $response = Mage::helper('oyst_oyst')->__("order id %s or status %s not found", $oystOrderId, $status);
         }

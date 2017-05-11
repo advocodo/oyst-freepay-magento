@@ -25,7 +25,8 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     public function syncFromNotification($event, $data)
     {
         //get last notification
-        $lastNotification = Mage::getModel('oyst_oyst/notification')->getLastNotification('payment', $data['payment_id']);
+        $lastNotification = Mage::getModel('oyst_oyst/notification')
+            ->getLastNotification('payment', $data['payment_id']);
 
         //if last notification is not finished
         if ($lastNotification->getId() && $lastNotification->getStatus() != 'finished') {
@@ -34,13 +35,15 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
         //create new notifaction in db with status 'start'
         $notification = Mage::getModel('oyst_oyst/notification');
-        $notification->setData(array(
-            'event' => $event,
-            'oyst_data' => Zend_Json::encode($data),
-            'status' => 'start',
-            'created_at' => Zend_Date::now(),
-            'executed_at' => Zend_Date::now()
-        ));
+        $notification->setData(
+            array(
+                'event' => $event,
+                'oyst_data' => Zend_Json::encode($data),
+                'status' => 'start',
+                'created_at' => Mage::getSingleton('core/date')->gmtDate(),
+                'executed_at' => Mage::getSingleton('core/date')->gmtDate()
+            )
+        );
         $notification->save();
 
         //get order INCREMENT id
@@ -66,7 +69,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         //save new status and result in db
         $notification->setStatus('finished')
             ->setOrderId($result['order_id'])
-            ->setExecutedAt(Zend_Date::now())
+            ->setExecutedAt(Mage::getSingleton('core/date')->gmtDate())
             ->save();
 
         return array('order_id' => $result['order_id']);
@@ -91,7 +94,6 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         if ($transactionData) {
             $this->_addTransaction($order->getId(), $transactionData);
         } else {
-
             //pay offline
             $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
             $invoice->register();
@@ -101,7 +103,9 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
             $invoice->getOrder()->setIsInProcess(true);
 
             //save order and invoice
-            $transactionSave = Mage::getModel('core/resource_transaction')->addObject($invoice)->addObject($invoice->getOrder());
+            $transactionSave = Mage::getModel('core/resource_transaction')
+                ->addObject($invoice)
+                ->addObject($invoice->getOrder());
             $transactionSave->save();
         }
 
@@ -138,7 +142,8 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
         if ($_order->getId() && $paymentId) {
             $payment = $_order->getPayment();
-            $amount = !empty($transactionData["amount"]) ? !empty($transactionData["amount"]["value"]) ? $transactionData["amount"]["value"] : 0 : 0;
+            $amount = !empty($transactionData["amount"]) ?
+                !empty($transactionData["amount"]["value"]) ? $transactionData["amount"]["value"] : 0 : 0;
 
             //must transfort amount from YYYYY to YYY.YY
             if ($amount > 0) {
@@ -178,13 +183,13 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      */
     protected function _constructParams()
     {
-        $order_increment_id = Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
-        $params['order_id'] = $order_increment_id;
+        $orderIncrementId = Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
+        $params['order_id'] = $orderIncrementId;
         $params['is_3d'] = (bool) $this->_getConfig('secure_3ds_enable');
         $params['label'] = $this->_getConfig('invoice_label');
 
         $this->_addAmount($params);
-        $this->_addUrls($params, $order_increment_id);
+        $this->_addUrls($params, $orderIncrementId);
         $this->_addUserInfos($params);
 
         return $params;
@@ -210,16 +215,20 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      * Add urls
      *
      * @param array $params
-     * @param Int $order_id
+     * @param int $orderId
      *
      * @return null
      */
-    protected function _addUrls(&$params, $order_id)
+    protected function _addUrls(&$params, $orderId)
     {
-        $notificationUrl = Mage::getStoreConfig('oyst/global_settings/notification_url') . 'order_increment_id' . DS . $order_id;
-        $cancelUrl = $this->_getConfig('cancel_url') . 'order_increment_id' . DS . $order_id;
-        $errorUrl = $this->_getConfig('error_url') . 'order_increment_id' . DS . $order_id;
-        $returnUrl = $this->_getConfig('return_url') . 'order_increment_id' . DS . $order_id;
+        $notificationUrl = sprintf(
+            "%s" . 'order_increment_id' . DS .  "%d",
+            Mage::getStoreConfig('oyst/global_settings/notification_url'),
+            $orderId
+        );
+        $cancelUrl = $this->_getConfig('cancel_url') . 'order_increment_id' . DS . $orderId;
+        $errorUrl = $this->_getConfig('error_url') . 'order_increment_id' . DS . $orderId;
+        $returnUrl = $this->_getConfig('return_url') . 'order_increment_id' . DS . $orderId;
 
         $params['urls'] = array(
             'notification' => $notificationUrl,
@@ -253,7 +262,8 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
             $params['user']['email'] = $customer->getEmail();
             $params['user']['first_name'] = $customer->getFirstname();
             $params['user']['last_name'] = $customer->getLastname();
-            $params['user']['phone'] = ($customer->getPhone()) ? $customer->getPhone() : $quote->getBillingAddress()->getTelephone();
+            $params['user']['phone'] = ($customer->getPhone()) ?
+                $customer->getPhone() : $quote->getBillingAddress()->getTelephone();
         }
 
         $params['user']['language'] = Mage::app()->getLocale()

@@ -126,19 +126,19 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
         Mage::helper('oyst_oyst')->log($dataJson);
 
         //analyse API response
-        $result_array = array();
+        $resultArray = array();
         if ($res === false || $info['http_code'] != '200') {
             Mage::helper('oyst_oyst')->log('Curl error target: ' . curl_error($ch));
             curl_close($ch);
             Mage::throwException($this->__('Curl error target: ' . curl_error($ch)));
         } else {
-            $result_array = Zend_Json::decode($res);
+            $resultArray = Zend_Json::decode($res);
         }
 
         curl_close($ch);
         // @codingStandardsIgnoreEnd
 
-        return $result_array;
+        return $resultArray;
     }
 
     /**

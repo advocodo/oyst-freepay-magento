@@ -20,4 +20,5 @@ if ($count) {
     Mage::getConfig()->saveConfig('oyst/payment_settings/return_url', $url . 'oyst/payment/return/');
     Mage::getConfig()->saveConfig('oyst/global_settings/notification_url', $url . 'oyst/notifications/index/');
 }
+
 $installer->endSetup();

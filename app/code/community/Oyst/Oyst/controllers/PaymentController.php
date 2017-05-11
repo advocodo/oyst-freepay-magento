@@ -32,7 +32,9 @@ class Oyst_Oyst_PaymentController extends Mage_Core_Controller_Front_Action
         $lastQuoteId = $checkoutSession->getLastQuoteId();
         $lastOrderId = $checkoutSession->getLastOrderId();
         if ($lastOrderId) {
-            Mage::getSingleton('core/session')->addError(Mage::helper('oyst_oyst')->__("Order %s cancelled", $lastOrderId));
+            Mage::getSingleton('core/session')->addError(
+                Mage::helper('oyst_oyst')->__("Order %s cancelled", $lastOrderId)
+            );
             $orderModel = Mage::getModel('sales/order')->load($lastOrderId);
 
             if ($lastQuoteId && $orderModel->canCancel()) {
@@ -48,6 +50,7 @@ class Oyst_Oyst_PaymentController extends Mage_Core_Controller_Front_Action
                 return;
             }
         }
+
         Mage::helper('oyst_oyst')->log('Order Cancel Error');
         $this->_redirect('checkout/cart', array('_secure' => true));
     }
@@ -59,9 +62,11 @@ class Oyst_Oyst_PaymentController extends Mage_Core_Controller_Front_Action
      */
     public function returnAction()
     {
-        $this->_redirect('checkout/onepage/success', array(
+        $this->_redirect(
+            'checkout/onepage/success', array(
             '_secure' => true
-        ));
+            )
+        );
     }
 
     /**
@@ -81,7 +86,9 @@ class Oyst_Oyst_PaymentController extends Mage_Core_Controller_Front_Action
         $lastQuoteId = $checkoutSession->getLastQuoteId();
         $lastOrderId = $checkoutSession->getLastOrderId();
         if ($lastOrderId) {
-            Mage::getSingleton('core/session')->addError(Mage::helper('oyst_oyst')->__("An error occured with order %s", $lastOrderId));
+            Mage::getSingleton('core/session')->addError(
+                Mage::helper('oyst_oyst')->__("An error occured with order %s", $lastOrderId)
+            );
             $orderModel = Mage::getModel('sales/order')->load($lastOrderId);
 
             if ($lastQuoteId && $orderModel->canCancel()) {
@@ -97,6 +104,7 @@ class Oyst_Oyst_PaymentController extends Mage_Core_Controller_Front_Action
                 return null;
             }
         }
+
         Mage::helper('oyst_oyst')->__('Payment Error');
         $this->_redirect('checkout/cart', array('_secure' => true));
 

@@ -137,7 +137,8 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
     public function syncFromNotification($event, $data)
     {
         //get last notification
-        $lastNotification = Mage::getModel('oyst_oyst/notification')->getLastNotification('catalog', $data['import_id']);
+        $lastNotification = Mage::getModel('oyst_oyst/notification')
+            ->getLastNotification('catalog', $data['import_id']);
 
         //if last notification is not finished
         if ($lastNotification->getId() && $lastNotification->getStatus() != 'finished') {
@@ -161,7 +162,9 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
         $params['import_id'] = $data['import_id'];
 
         //get last notification with this id and have remaining
-        $notificationCollection = Mage::getModel('oyst_oyst/notification')->getCollection()->addDataIdToFilter('catalog', $data['import_id']);
+        $notificationCollection = Mage::getModel('oyst_oyst/notification')
+            ->getCollection()
+            ->addDataIdToFilter('catalog', $data['import_id']);
         $excludedProductsId = array();
         //set id to exclude
         foreach ($notificationCollection as $pastNotification) {
@@ -169,17 +172,20 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
                 $excludedProductsId = array_merge($excludedProductsId, $productsId);
             }
         }
+
         $params['product_id_exclude_filter'] = $excludedProductsId;
 
         //create new notifaction in db with status 'start'
         $notification = Mage::getModel('oyst_oyst/notification');
-        $notification->setData(array(
-            'event' => $event,
-            'oyst_data' => Zend_Json::encode($data),
-            'status' => 'start',
-            'created_at' => Zend_Date::now(),
-            'executed_at' => Zend_Date::now()
-        ));
+        $notification->setData(
+            array(
+                'event' => $event,
+                'oyst_data' => Zend_Json::encode($data),
+                'status' => 'start',
+                'created_at' => Mage::getSingleton('core/date')->gmtDate(),
+                'executed_at' => Mage::getSingleton('core/date')->gmtDate()
+            )
+        );
         $notification->save();
         Mage::helper('oyst_oyst')->log('Start of import id : ' . $data['import_id']);
 
@@ -197,7 +203,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
             ->setOystData(Zend_Json::encode($data))
             ->setProductsId(Zend_Json::encode($result['imported_product_ids']))
             ->setImportRemaining($response['remaining'])
-            ->setExecutedAt(Zend_Date::now())
+            ->setExecutedAt(Mage::getSingleton('core/date')->gmtDate())
             ->save();
         Mage::helper('oyst_oyst')->log('End of import id : ' . $data['import_id']);
 
@@ -242,15 +248,21 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
         $collection = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect('*');
         if (! empty($params) && is_array($params)) {
             if (!empty($params["product_id_include_filter"])) {
-                $collection->addAttributeToFilter('entity_id', array(
-                    'in' => $params['product_id_include_filter']
-                ));
+                $collection->addAttributeToFilter(
+                    'entity_id',
+                    array(
+                        'in' => $params['product_id_include_filter']
+                    )
+                );
             }
 
             if (!empty($params["product_id_exclude_filter"])) {
-                $collection->addAttributeToFilter('entity_id', array(
-                    'nin' => $params['product_id_exclude_filter']
-                ));
+                $collection->addAttributeToFilter(
+                    'entity_id',
+                    array(
+                        'nin' => $params['product_id_exclude_filter']
+                    )
+                );
             }
 
             if (!empty($params['num_per_page'])) {
@@ -303,6 +315,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
 
             $productsFormated['products'][] = $attributes;
         }
+
         $productsFormated['imported_product_ids'] = $importedProductIds;
 
         return $productsFormated;
@@ -321,12 +334,15 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
         foreach ($translateAttribute as $attributeCode => $simpleAttribute) {
             if ($data = $product->getData($attributeCode)) {
                 if ($simpleAttribute['type'] == 'jsonb') {
-                    $data = Zend_Json::encode(array(
-                        'meta' => $data
-                    ));
+                    $data = Zend_Json::encode(
+                        array(
+                            'meta' => $data
+                        )
+                    );
                 } else {
                     settype($data, $simpleAttribute['type']);
                 }
+
                 if ($data !== null) {
                     $attributes[$simpleAttribute['name']] = $data;
                 }
@@ -337,6 +353,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
                     $data = 'Empty';
                     settype($data, $simpleAttribute['type']);
                 }
+
                 $attributes[$simpleAttribute['name']] = $data;
             }
         }
@@ -405,6 +422,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
                 $attributes['categories'][$index]['reference'] = $category->getId();
                 $index ++;
             }
+
             $indexStore ++;
         }
     }
@@ -490,9 +508,13 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
     {
         $attribute = Mage::getSingleton('catalog/product')->getResource()->getAttribute('media_gallery');
         $media = Mage::getResourceSingleton('catalog/product_attribute_backend_media');
-        $gallery = $media->loadGallery($product, new Varien_Object(array(
-            'attribute' => $attribute
-        )));
+        $gallery = $media->loadGallery(
+            $product, new Varien_Object(
+                array(
+                    'attribute' => $attribute
+                )
+            )
+        );
 
         foreach ($gallery as $image) {
             $attributes['images'][]['url'] = $product->getMediaConfig()->getMediaUrl($image['file']);
@@ -535,7 +557,8 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
             $billingAddress = $shippingAddress->getQuote()->getBillingAddress();
         }
 
-        return Mage::helper('oyst_oyst/catalog_tax')->getPrice($pseudoProduct, $price, $includingTax, $shippingAddress, $billingAddress, $ctc, $store, false, true, true);
+        return Mage::helper('oyst_oyst/catalog_tax')
+            ->getPrice($pseudoProduct, $price, $includingTax, $shippingAddress, $billingAddress, $ctc, $store, false, true, true);
     }
 
     /**

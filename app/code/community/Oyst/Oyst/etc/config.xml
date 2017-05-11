@@ -83,7 +83,7 @@
             </modules>
         </translate>
     </frontend>
-    <Admin>
+    <admin>
         <routers>
             <adminhtml>
                 <args>
@@ -93,7 +93,7 @@
                 </args>
             </adminhtml>
         </routers>
-    </Admin>
+    </admin>
     <adminhtml>
         <events>
             <adminhtml_catalog_product_grid_prepare_massaction>

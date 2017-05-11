@@ -48,11 +48,13 @@ class Oyst_Oyst_Block_Adminhtml_Field_InitButton extends Mage_Adminhtml_Block_Sy
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $fieldConfig = $element->getFieldConfig();
-        $this->addData(array(
-                'button_label' => Mage::helper('oyst_oyst')->__((string)$fieldConfig->button_label),
-                'button_url'   => $this->getUrl($fieldConfig->button_url, array('_secure' => true)),
+        $this->addData(
+            array(
+                'button_label' => Mage::helper('oyst_oyst')->__((string)$fieldConfig->descend('button_label')),
+                'button_url'   => $this->getUrl($fieldConfig->descend('button_url'), array('_secure' => true)),
                 'html_id' => $element->getHtmlId()
-        ));
+            )
+        );
 
         return $this->_toHtml();
     }

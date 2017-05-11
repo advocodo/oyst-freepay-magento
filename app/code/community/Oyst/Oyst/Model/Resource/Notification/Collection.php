@@ -35,19 +35,29 @@ class Oyst_Oyst_Model_Resource_Notification_Collection extends Mage_Core_Model_R
     {
         if ($dataId) {
             if ($type == 'catalog') {
-                $this->addFieldToFilter('oyst_data', array(
-                    'like' => '%import_id":"' . $dataId . '"%'
-                ));
+                $this->addFieldToFilter(
+                    'oyst_data',
+                    array(
+                        'like' => '%import_id":"' . $dataId . '"%'
+                    )
+                );
             } elseif ($type == 'order') {
-                $this->addFieldToFilter('oyst_data', array(
-                    'like' => '%order_id":"' . $dataId . '"%'
-                ));
+                $this->addFieldToFilter(
+                    'oyst_data',
+                    array(
+                        'like' => '%order_id":"' . $dataId . '"%'
+                    )
+                );
             } elseif ($type == 'payment') {
-                $this->addFieldToFilter('oyst_data', array(
-                    'like' => '%payment_id":"' . $dataId . '"%'
-                ));
+                $this->addFieldToFilter(
+                    'oyst_data',
+                    array(
+                        'like' => '%payment_id":"' . $dataId . '"%'
+                    )
+                );
             }
         }
+
         $this->setOrder('notification_id');
 
         return $this;

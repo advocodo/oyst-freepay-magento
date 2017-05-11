@@ -50,6 +50,7 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
 
             return $this;
         }
+
         if ($event == 'products.import') {
             $helperName = 'oyst_oyst/catalog_data';
         } elseif ($event == 'notification.newOrder') {
@@ -67,6 +68,7 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
 
             return $this;
         }
+
         $result = $helper->syncFromNotification($event, $data);
         $this->getResponse()->setBody(Zend_Json::encode($result));
     }

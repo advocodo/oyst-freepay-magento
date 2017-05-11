@@ -14,14 +14,6 @@
  */
 class Oyst_Oyst_Helper_Autoloader
 {
-    /**
-     * An associative array where the key is a namespace prefix and the value
-     * is an array of base directories for classes in that namespace.
-     *
-     * @var array
-     */
-    protected $prefixes = array();
-
     /*
      * Validate the use of autoload
      */
@@ -32,6 +24,7 @@ class Oyst_Oyst_Helper_Autoloader
             if ($libBaseDir[0] !== '/') {
                 $libBaseDir = Mage::getBaseDir() . DS . $libBaseDir;
             }
+
             self::loadComposerAutoLoad($libBaseDir);
         }
     }

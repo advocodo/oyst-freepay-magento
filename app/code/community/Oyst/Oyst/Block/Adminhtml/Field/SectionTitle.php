@@ -44,7 +44,9 @@ class Oyst_Oyst_Block_Adminhtml_Field_SectionTitle extends Mage_Adminhtml_Block_
         $html .= $this->_getElementHtml($element);
 
         if ($element->getComment()) {
-            $html .= '<p class="note" style="margin-left: 20px; margin-bottom: 15px;"><span>' . $element->getComment() . '</span></p>';
+            $html .= '<p class="note" style="margin-left: 20px; margin-bottom: 15px;">';
+            $html .= '<span>' . $element->getComment() . '</span>';
+            $html .= '</p>';
         }
 
         $html .= '</td>';

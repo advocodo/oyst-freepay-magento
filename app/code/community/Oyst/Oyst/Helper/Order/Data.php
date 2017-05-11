@@ -70,13 +70,15 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
         //create new notifaction in db with status 'start'
         $notification = Mage::getModel('oyst_oyst/notification');
-        $notification->setData(array(
-            'event' => $event,
-            'oyst_data' => Zend_Json::encode($data),
-            'status' => 'start',
-            'created_at' => Zend_Date::now(),
-            'executed_at' => Zend_Date::now()
-        ));
+        $notification->setData(
+            array(
+                'event' => $event,
+                'oyst_data' => Zend_Json::encode($data),
+                'status' => 'start',
+                'created_at' => Mage::getSingleton('core/date')->gmtDate(),
+                'executed_at' => Mage::getSingleton('core/date')->gmtDate()
+            )
+        );
         $notification->save();
 
         $params = array(
@@ -88,7 +90,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         //save new status and result in db
         $notification->setStatus('finished')
             ->setOrderId($result['magento_order_id'])
-            ->setExecutedAt(Zend_Date::now())
+            ->setExecutedAt(Mage::getSingleton('core/date')->gmtDate())
             ->save();
 
         return array(
@@ -131,9 +133,11 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
 
         //init quote address
         $quote = $this->_initAddresses($params, $quote);
-        $quote->getPayment()->importData(array(
-            'method' => 'oyst'
-        ));
+        $quote->getPayment()->importData(
+            array(
+                'method' => 'oyst'
+            )
+        );
 
         //init quote customer
         $quote = $this->_initCustomerInfos($params, $quote);
@@ -272,7 +276,9 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
                 $lastname = $params['user']['lastname'];
             }
 
-            if (array_key_exists('user', $params) && array_key_exists('user', $params['user']) && ! empty($params['user']['email'])) {
+            if (array_key_exists('user', $params) &&
+                array_key_exists('user', $params['user']) &&
+                !empty($params['user']['email'])) {
                 $email = $params['user']['email'];
             } else {
                 $email = Mage::getStoreConfig('trans_email/ident_general/email');
@@ -343,9 +349,11 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
             $order->cancel();
             $order->save();
         } elseif ($lastStatus == 'accepted') {
-            $result = $this->invoice(array(
-                'order_increment_id' => $order->getIncrementId()
-            ));
+            $result = $this->invoice(
+                array(
+                    'order_increment_id' => $order->getIncrementId()
+                )
+            );
             $order = $order->load($result['order_id']);
         }
 
