@@ -14,6 +14,14 @@
  */
 class Oyst_Oyst_Model_Payment_Method_Oyst extends Mage_Payment_Model_Method_Abstract
 {
+    const PAYMENT_METHOD_NAME = 'Oyst Freepay';
+
+    const EVENT_CODE_AUTHORISATION = 'AUTHORISATION';
+    const EVENT_CODE_CAPTURE = 'CAPTURE';
+    const EVENT_CODE_CANCELLATION = 'CANCELLATION';
+
+    protected $_infoBlockType = 'oyst_oyst/info_freepay';
+
     /**
      * Payment method code
      * @var string

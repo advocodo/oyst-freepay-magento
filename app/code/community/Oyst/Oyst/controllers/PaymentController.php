@@ -16,7 +16,8 @@ class Oyst_Oyst_PaymentController extends Mage_Core_Controller_Front_Action
 {
 
     /**
-     * Cancel the order in case of payment error
+     * Cancel the order in case of payment error or
+     * when a customer cancel payment from oyst.
      *
      * @return null
      */
@@ -62,9 +63,16 @@ class Oyst_Oyst_PaymentController extends Mage_Core_Controller_Front_Action
      */
     public function returnAction()
     {
+        Mage::helper('oyst_oyst')->log('Redirecting to success page');
+
+        $orderIncrementId = Mage::app()->getRequest()->getParam('order_increment_id');
+        $order = Mage::getModel('sales/order')->load($orderIncrementId);
+
         $this->_redirect(
-            'checkout/onepage/success', array(
-            '_secure' => true
+            'checkout/onepage/success',
+            array(
+                '_secure' => true,
+                '_store' => $order->getStore()->getId(),
             )
         );
     }

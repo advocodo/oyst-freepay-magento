@@ -68,7 +68,7 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
      */
     public function validateApikey($apiKey)
     {
-        if (strlen($apiKey) === sefl::API_KEY_LENGTH) {
+        if (strlen($apiKey) === self::API_KEY_LENGTH) {
             return true;
         }
 

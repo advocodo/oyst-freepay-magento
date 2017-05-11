@@ -40,3 +40,14 @@
 "Cancel URL","URL d'annulation"
 "Error URL","URL d'erreur"
 "Return URL","URL de retour"
+
+"Transaction Number","Numéro de transaction"
+"Payment Mean","Moyen de paiement"
+"Credit Card No Last 4","4 derniers chiffres de la carte bancaire"
+"Expiration Date","Date d'expiration"
+
+"Payment Service Providers","Prestataire de services de paiement"
+"Transaction Type","Type de transaction"
+"Amount","Montant"
+"Transaction Number","Numéro de transaction"
+"Transaction Status","Statut de la transaction"

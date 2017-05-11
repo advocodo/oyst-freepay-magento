@@ -33,7 +33,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
             Mage::throwException($this->__("Last Notification payment id %s is not finished", $data['payment_id']));
         }
 
-        //create new notifaction in db with status 'start'
+        //create new notification in db with status 'start'
         $notification = Mage::getModel('oyst_oyst/notification');
         $notification->setData(
             array(
@@ -41,7 +41,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
                 'oyst_data' => Zend_Json::encode($data),
                 'status' => 'start',
                 'created_at' => Mage::getSingleton('core/date')->gmtDate(),
-                'executed_at' => Mage::getSingleton('core/date')->gmtDate()
+                'executed_at' => Mage::getSingleton('core/date')->gmtDate(),
             )
         );
         $notification->save();
@@ -60,10 +60,26 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
             'order_increment_id' => $orderIncrementId
         );
         //if data asynchrone payment notification is success, we invoice the order, else we cancel
-        if ($data['success']) {
+        if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_AUTHORISATION == $data['event_code'] && $data['success']) {
             $result = $this->invoice($params, $data);
-        } else {
+        }
+
+        if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_CAPTURE == $data['event_code'] && $data['success']) {
+            $result = $this->invoice($params, $data);
+        }
+
+        if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_CANCELLATION == $data['event_code'] && $data['success']) {
+            $params['notification'] = "$notification->getId()";
             $result = $this->cancel($params);
+        }
+
+        if (!$data['success']) {
+            $this->addNotificationHistoryComment(
+                sprintf(
+                    $this->__('Last %s notification fail.'),
+                    $data['event_code']
+                )
+            )->save();
         }
 
         //save new status and result in db
@@ -130,27 +146,68 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Add history in Order
+     *
+     * @param array $params
+     */
+    public function addNotificationHistoryComment($params)
+    {
+        $order = Mage::getModel('sales/order')->load($params['order_increment_id'], 'increment_id');
+
+        $order->addStatusHistoryComment($this->__('Notification.'))->save();
+    }
+
+    /**
      * Create order Transaction
      *
      * @param string $orderId
-     * @param string $TransactionId
+     * @param array $transactionData
      */
     protected function _addTransaction($orderId, $transactionData)
     {
         $_order = Mage::getModel('sales/order')->load($orderId);
-        $paymentId = !empty($transactionData["payment_id"]) ? $transactionData["payment_id"] : false;
+
+        $paymentId = !empty($transactionData['payment_id']) ? $transactionData['payment_id'] : false;
 
         if ($_order->getId() && $paymentId) {
+            /** @var Mage_Sales_Model_Order_Payment $payment */
             $payment = $_order->getPayment();
-            $amount = !empty($transactionData["amount"]) ?
-                !empty($transactionData["amount"]["value"]) ? $transactionData["amount"]["value"] : 0 : 0;
+            $amount = !empty($transactionData['amount']) ? !empty($transactionData['amount']['value']) ? $transactionData['amount']['value'] : 0 : 0;
 
-            //must transfort amount from YYYYY to YYY.YY
+            //must transform amount from YYYYY to YYY.YY
             if ($amount > 0) {
                 $amount = (float)$amount / 100;
             } else {
                 $amount = 0;
             }
+
+            $expiryMonth = '';
+            $expiryYear = '';
+            list($expiryMonth, $expiryYear) = explode('/', $transactionData['additional_data']['expiry_date']);
+
+            // save payment infos to sales_flat_order_payment
+            $_order->getPayment()
+                ->setCcType('CB')
+                ->setCcLast4($transactionData['additional_data']['card_summary'])
+                ->setCcExpMonth($expiryMonth)
+                ->setCcExpYear($expiryYear);
+
+            // save transaction details to sales_payment_transaction
+            $additionalInfo = array(
+                Mage::helper('oyst_oyst')->__('Payment Service Providers') => Oyst_Oyst_Model_Payment_Method_Oyst::PAYMENT_METHOD_NAME,
+                Mage::helper('oyst_oyst')->__('Transaction Number') => $transactionData['payment_id'],
+                Mage::helper('oyst_oyst')->__('Transaction Type') => 'DEBIT',
+                Mage::helper('oyst_oyst')->__('Transaction Status') => $transactionData['event_code'],
+                Mage::helper('oyst_oyst')->__('Amount') => $amount . ' ' . $transactionData['amount']['currency'],
+                Mage::helper('oyst_oyst')->__('Credit Card No Last 4') => $transactionData['additional_data']['card_summary'],
+                Mage::helper('oyst_oyst')->__('Expiration Date') => $expiryMonth . ' / ' . $expiryYear,
+            );
+
+            //set transaction addition information
+            $payment->setTransactionAdditionalInfo(
+                Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS,
+                $additionalInfo
+            );
 
             $payment->setTransactionId($paymentId)
                 ->setCurrencyCode()
@@ -158,7 +215,14 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
                 ->setParentTransactionId(false)
                 ->setShouldCloseParentTransaction(true)
                 ->setIsTransactionClosed(1)
-                ->registerCaptureNotification($amount, true);
+                ->setAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $additionalInfo);
+
+            if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_AUTHORISATION == $transactionData['event_code']) {
+                $payment->registerAuthorizationNotification($amount);
+            } elseif (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_CAPTURE == $transactionData['event_code']) {
+                $payment->registerCaptureNotification($amount, true);
+            }
+
             $_order->save();
         }
     }
@@ -306,7 +370,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get all optionalle customer information from quote
+     * Get all optional customer information from quote
      *
      * @param Mage_Sales_Model_Quote $quote
      *

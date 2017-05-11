@@ -16,7 +16,8 @@ if [ -n "$GitHub_Release" ]; then
     GitHubProjectReleaseUrl=https://api.github.com/repos/$GitHub_Owner/$GitHub_Repo/tarball/$GitHub_Release
 else
     # Latest release url
-    GitHubProjectReleaseUrl=$(curl -s https://api.github.com/repos/$GitHub_Owner/$GitHub_Repo/releases/latest | grep 'tarball_url' | cut -d\" -f4)
+    GitHubProjectReleaseUrl=$(curl -LsS --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 60 \
+     "https://api.github.com/repos/$GitHub_Owner/$GitHub_Repo/releases/latest" | grep 'tarball_url' | cut -d\" -f4)
 fi
 
 # Download release

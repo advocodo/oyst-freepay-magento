@@ -1,6 +1,7 @@
 ## Modman Module Oyst Payment
-app/code/community/Oyst/                            app/code/community/Oyst/
-app/design/adminhtml/default/oyst/*                 app/design/adminhtml/default/oyst/
-app/etc/modules/Oyst_Oyst.xml                       app/etc/modules/Oyst_Oyst.xml
-app/locale/fr_FR/*                                  app/locale/fr_FR/
-lib/Oyst/oyst-php/*                                 lib/Oyst/oyst-php/
+app/code/community/Oyst/                                app/code/community/Oyst/
+app/design/adminhtml/default/default/template/oyst/*     app/design/adminhtml/default/default/template/oyst/
+app/design/adminhtml/default/oyst/*                     app/design/adminhtml/default/oyst/
+app/etc/modules/Oyst_Oyst.xml                           app/etc/modules/Oyst_Oyst.xml
+app/locale/fr_FR/*                                      app/locale/fr_FR/
+lib/Oyst/oyst-php/*                                     lib/Oyst/oyst-php/
