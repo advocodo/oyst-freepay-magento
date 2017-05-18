@@ -11,6 +11,7 @@
 
 /**
  * Custom renderer for the Oyst section title
+ *
  * Adminhtml_Field_SectionTitle Block
  */
 class Oyst_Oyst_Block_Adminhtml_Field_SectionTitle extends Mage_Adminhtml_Block_System_Config_Form_Field
@@ -19,6 +20,7 @@ class Oyst_Oyst_Block_Adminhtml_Field_SectionTitle extends Mage_Adminhtml_Block_
      * Enter description here...
      *
      * @param Varien_Data_Form_Element_Abstract $element
+     *
      * @return string
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)

@@ -44,10 +44,13 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
      */
     protected function _activeMenu()
     {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
         $this->loadLayout()
             ->_setActiveMenu('oyst/oyst_actions')
-            ->_title(Mage::helper('oyst_oyst')->__('Actions'))
-            ->_addBreadcrumb(Mage::helper('oyst_oyst')->__('Actions'), Mage::helper('oyst_oyst')->__('Actions'));
+            ->_title($oystHelper->__('Actions'))
+            ->_addBreadcrumb($oystHelper->__('Actions'), $oystHelper->__('Actions'));
 
         return $this;
     }

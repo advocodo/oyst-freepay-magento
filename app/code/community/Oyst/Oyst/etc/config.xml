@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Oyst_Oyst>
-            <version>0.1.5</version>
+            <version>1.0.0</version>
         </Oyst_Oyst>
     </modules>
     <global>
@@ -131,6 +131,17 @@
                     </auto_invoice_order>
                 </observers>
             </sales_order_save_after>
+
+            <!-- Change the cancel button action -->
+            <sales_order_payment_cancel>
+                <observers>
+                    <hold_order_on_cancel>
+                        <type>singleton</type>
+                        <class>Oyst_Oyst_Model_Observer</class>
+                        <method>sendCancelOrderStatusUpdate</method>
+                    </hold_order_on_cancel>
+                </observers>
+            </sales_order_payment_cancel>
         </events>
         <layout>
             <updates>
@@ -156,8 +167,7 @@
             <oyst>
                 <developed_by>Oyst</developed_by>
                 <contact_email>dev@oyst.com</contact_email>
-                <module_version>1.0.0</module_version>
-                <sdk_version>v1.1.0</sdk_version>
+                <sdk_version>v1.2.0</sdk_version>
                 <enable_logs>1</enable_logs>
 
                 <model>oyst_oyst/payment_method_oyst</model>

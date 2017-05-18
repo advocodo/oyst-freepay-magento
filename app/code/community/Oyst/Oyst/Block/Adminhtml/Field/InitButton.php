@@ -11,6 +11,7 @@
 
 /**
  * Custom renderer for the Oyst init button
+ *
  * Adminhtml_Field_InitButton Block
  */
 class Oyst_Oyst_Block_Adminhtml_Field_InitButton extends Mage_Adminhtml_Block_System_Config_Form_Field
@@ -47,10 +48,13 @@ class Oyst_Oyst_Block_Adminhtml_Field_InitButton extends Mage_Adminhtml_Block_Sy
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
         $fieldConfig = $element->getFieldConfig();
         $this->addData(
             array(
-                'button_label' => Mage::helper('oyst_oyst')->__((string)$fieldConfig->descend('button_label')),
+                'button_label' => $oystHelper->__((string)$fieldConfig->descend('button_label')),
                 'button_url'   => $this->getUrl($fieldConfig->descend('button_url'), array('_secure' => true)),
                 'html_id' => $element->getHtmlId()
             )

@@ -187,7 +187,10 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
             )
         );
         $notification->save();
-        Mage::helper('oyst_oyst')->log('Start of import id : ' . $data['import_id']);
+
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+        $oystHelper->log('Start of import id : ' . $data['import_id']);
 
         //synchronize with Oyst
         $result = $this->sync($params);
@@ -205,7 +208,7 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
             ->setImportRemaining($response['remaining'])
             ->setExecutedAt(Mage::getSingleton('core/date')->gmtDate())
             ->save();
-        Mage::helper('oyst_oyst')->log('End of import id : ' . $data['import_id']);
+        $oystHelper->log('End of import id : ' . $data['import_id']);
 
         return $response;
     }
@@ -218,9 +221,12 @@ class Oyst_Oyst_Helper_Catalog_Data extends Mage_Core_Helper_Abstract
      */
     public function sync($params = array())
     {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
         //get list of product from params
         $collection = $this->_prepareCollection($params);
-        Mage::helper('oyst_oyst')->log('Product Collection Sql : ' . $collection->getSelect()->__toString());
+        $oystHelper->log('Product Collection Sql : ' . $collection->getSelect()->__toString());
 
         //format list into array
         $productsFormated = $this->_format($collection);

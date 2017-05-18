@@ -85,9 +85,12 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
      */
     public function send($type, $dataFormated)
     {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
         //if api type don't have method associate
         if (!method_exists($this, $type)) {
-            Mage::helper('oyst_oyst')->log('Something wrong with Oyst api : ' . $type);
+            $oystHelper->log('Something wrong with Oyst api : ' . $type);
             Mage::throwException($this->__('Something wrong with Oyst api : ' . $type));
         }
 
@@ -100,7 +103,7 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
         //if type is order, we must retrieve the param 'oyst_order_id' from $dataFormated but not send it
         if ($type == Oyst_Oyst_Model_Api::TYPE_PUTORDER) {
             $targetUrl .= 'order' . DS . 'orders' . DS . $dataFormated['oyst_order_id'];
-            Mage::helper('oyst_oyst')->log('Oyst api order id : ' . $dataFormated['oyst_order_id']);
+            $oystHelper->log('Oyst api order id : ' . $dataFormated['oyst_order_id']);
             unset($dataFormated['oyst_order_id']);
         }
 
@@ -123,12 +126,12 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
 
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
-        Mage::helper('oyst_oyst')->log($dataJson);
+        $oystHelper->log($dataJson);
 
         //analyse API response
         $resultArray = array();
         if ($res === false || $info['http_code'] != '200') {
-            Mage::helper('oyst_oyst')->log('Curl error target: ' . curl_error($ch));
+            $oystHelper->log('Curl error target: ' . curl_error($ch));
             curl_close($ch);
             Mage::throwException($this->__('Curl error target: ' . curl_error($ch)));
         } else {
@@ -171,8 +174,6 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
             $dataFormated['is_3d'],
             $dataFormated['user']
         );
-
-        Mage::helper('oyst_oyst')->log($oystClient);
 
         return $oystClient;
     }
@@ -327,6 +328,36 @@ class Oyst_Oyst_Model_Api extends Mage_Core_Model_Abstract
      */
     public function getUserAgent()
     {
-        return sprintf('Magento v%s', Mage::getVersion());
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
+        return sprintf('Magento v%s - Oyst_Oyst v%s', Mage::getVersion(), $oystHelper->getExtensionVersion());
+    }
+
+    /**
+     * API call to Oyst Payment
+     *
+     * @param string $type
+     * @param array $dataFormated
+     *
+     * @return OystPaymentAPI
+     */
+    public function sendCancelOrRefund($type, $dataFormated)
+    {
+        //get api service url from config
+        $targetUrl = $this->_getConfig('api_url');
+
+        //get api key from config
+        $apiKey = $this->_getConfig('api_login');
+
+        //get user agent
+        $userAgent = $this->getUserAgent();
+
+        /** @var OystPaymentApi $oystClient */
+        $oystClient = OystApiClientFactory::getClient($type, $apiKey, $userAgent, OystApiClientFactory::ENV_PREPROD);
+
+        $oystClient->cancelOrRefund($dataFormated);
+
+        return $oystClient;
     }
 }

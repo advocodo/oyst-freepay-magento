@@ -23,14 +23,17 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
      */
     public function addCatalogMassAction(Varien_Event_Observer $observer)
     {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
         // get MassAction blog from admin
         $block = $observer->getEvent()->getBlock();
         $block->getMassactionBlock()->addItem(
             'send_to_oyst',
             array(
-                'label' => Mage::helper('oyst_oyst')->__('Send To Oyst'),
+                'label' => $oystHelper->__('Send To Oyst'),
                 'url' => Mage::helper('adminhtml')->getUrl('adminhtml/oyst_catalog/sync'),
-                'confirm' => Mage::helper('oyst_oyst')->__('Are you sure?')
+                'confirm' => $oystHelper->__('Are you sure?')
             )
         );
 
@@ -54,7 +57,9 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
         $product = $observer->getEvent()->getProduct();
         $productId = $product->getId();
 
-        Mage::helper('oyst_oyst')->log('Start of update of product id : ' . $productId);
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+        $oystHelper->log('Start of update of product id : ' . $productId);
         $params = array(
             'product_id_include_filter' => array(
                 $productId
@@ -64,7 +69,7 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
 
         // send product updates to Oyst
         Mage::helper('oyst_oyst/catalog_data')->sync($params);
-        Mage::helper('oyst_oyst')->log('end of update of product id : ' . $productId);
+        $oystHelper->log('end of update of product id : ' . $productId);
 
         return $this;
     }
@@ -121,6 +126,61 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
 
         return $this;
     }
+
+    /**
+     * Update order status on cancel event
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return Oyst_Oyst_Model_Observer
+     */
+    public function sendCancelOrderStatusUpdate(Varien_Event_Observer $observer)
+    {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getPayment()->getOrder();
+
+        if (!$this->isPaymentMethodOyst($order)) {
+            return;
+        }
+
+        $orderStatusOnCancel = Mage::getStoreConfig('payment/oyst/payment_cancelled');
+        if (Mage_Sales_Model_Order::STATE_HOLDED === $orderStatusOnCancel) {
+            if ($order->canHold()) {
+                $order
+                    ->hold()
+                    ->addStatusHistoryComment(
+                        $oystHelper->__('Cancel Order asked. Waiting for Freepay notification. Transaction ID: "%s".', $order->getTxnId())
+                    )
+                    ->save();
+            }
+        }
+
+        if (Mage_Sales_Model_Order::STATE_CANCELED === $orderStatusOnCancel) {
+            if ($order->canCancel()) {
+                $order
+                    ->cancel()
+                    ->addStatusHistoryComment(
+                        $oystHelper->__('Success Cancel Order. Transaction ID: "%s".', $order->getTxnId())
+                    )
+                    ->save();
+
+                return $this;
+            }
+        }
+
+        $oystHelper->log('Start send cancelOrRefund of order id : ' . $order->getId());
+
+        /** @var Oyst_Oyst_Model_Payment_ApiWrapper $response */
+        $response = Mage::getModel('oyst_oyst/payment_apiWrapper');
+        $response->cancelOrRefund($order->getPayment()->getLastTransId());
+
+        $oystHelper->log('Waiting from cancelOrRefund notification of order id : ' . $order->getId());
+
+        return $this;
+    }
     
     public function validateApiKey(Varien_Event_Observer $observer)
     {
@@ -139,7 +199,9 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
             
             $apiResponse = Mage::getModel('oyst_oyst/api')->validateApikeyFromApi($apiKey);
             if ($apiResponse != "true") {
-                Mage::throwException(Mage::helper('oyst_oyst')->__("API key %s is not valid", $apiKey));
+                /** @var Oyst_Oyst_Helper_Data $oystHelper */
+                $oystHelper = Mage::helper('oyst_oyst');
+                Mage::throwException($oystHelper->__("API key %s is not valid", $apiKey));
             }
         }
 

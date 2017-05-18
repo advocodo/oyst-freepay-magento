@@ -30,6 +30,9 @@ class Oyst_Oyst_Block_Info_Freepay extends Mage_Payment_Block_Info
      */
     protected function _prepareSpecificInformation($transport = null)
     {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
         if (null !== $this->_paymentSpecificInformation) {
             return $this->_paymentSpecificInformation;
         }
@@ -40,10 +43,10 @@ class Oyst_Oyst_Block_Info_Freepay extends Mage_Payment_Block_Info
         $transport = parent::_prepareSpecificInformation($transport);
         $transport->addData(
             array(
-                Mage::helper('oyst_oyst')->__('Transaction Number') => $info->getLastTransId(),
-                Mage::helper('oyst_oyst')->__('Payment Mean') => $info->getCcType(),
-                Mage::helper('oyst_oyst')->__('Credit Card No Last 4') => $info->getCcLast4(),
-                Mage::helper('oyst_oyst')->__('Expiration Date') => $info->getCcExpMonth() . ' / ' . $info->getCcExpYear(),
+                $oystHelper->__('Transaction Number') => $info->getLastTransId(),
+                $oystHelper->__('Payment Mean') => $info->getCcType(),
+                $oystHelper->__('Credit Card No Last 4') => $info->getCcLast4(),
+                $oystHelper->__('Expiration Date') => $info->getCcExpMonth() . ' / ' . $info->getCcExpYear(),
             )
         );
         return $transport;

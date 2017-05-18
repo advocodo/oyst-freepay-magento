@@ -11,6 +11,7 @@
 
 /**
  * Custom renderer for the Oyst section title
+ *
  * Adminhtml_Field_SectionTitleFreepay Block
  */
 class Oyst_Oyst_Block_Adminhtml_Field_SectionTitleFreepay extends Mage_Adminhtml_Block_System_Config_Form_Field

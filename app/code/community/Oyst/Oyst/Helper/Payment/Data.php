@@ -57,7 +57,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         }
 
         $params = array(
-            'order_increment_id' => $orderIncrementId
+            'order_increment_id' => $orderIncrementId,
         );
         //if data asynchrone payment notification is success, we invoice the order, else we cancel
         if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_AUTHORISATION == $data['event_code'] && $data['success']) {
@@ -70,7 +70,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
         if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_CANCELLATION == $data['event_code'] && $data['success']) {
             $params['notification'] = "$notification->getId()";
-            $result = $this->cancel($params);
+            $result = $this->cancel($params, $data);
         }
 
         if (!$data['success']) {
@@ -135,10 +135,32 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function cancel($params)
+    public function cancel($params, $data)
     {
         $order = Mage::getModel('sales/order')->load($params['order_increment_id'], 'increment_id');
-        $order->cancel()->save();
+
+        if ($order->canUnhold()) {
+            $order->unhold()->save();
+        }
+
+        if (!$order->canCancel()) {
+            $order->addStatusHistoryComment(
+                $this->__('Cancel Order is not possible. Transaction ID: "%s".', $data['payment_id'])
+            )->save();
+        } else {
+            try {
+                $order->cancel();
+                $order->getStatusHistoryCollection(true);
+                $order->save();
+
+                $order->addStatusHistoryComment(
+                    $this->__('Success Cancel Order. Transaction ID: "%s".', $data['payment_id'])
+                )->save();
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+
+        }
 
         return array(
             'order_id' => $order->getId()
@@ -165,28 +187,25 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      */
     protected function _addTransaction($orderId, $transactionData)
     {
-        $_order = Mage::getModel('sales/order')->load($orderId);
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
+        $order = Mage::getModel('sales/order')->load($orderId);
 
         $paymentId = !empty($transactionData['payment_id']) ? $transactionData['payment_id'] : false;
 
-        if ($_order->getId() && $paymentId) {
+        if ($order->getId() && $paymentId) {
             /** @var Mage_Sales_Model_Order_Payment $payment */
-            $payment = $_order->getPayment();
-            $amount = !empty($transactionData['amount']) ? !empty($transactionData['amount']['value']) ? $transactionData['amount']['value'] : 0 : 0;
+            $payment = $order->getPayment();
 
-            //must transform amount from YYYYY to YYY.YY
-            if ($amount > 0) {
-                $amount = (float)$amount / 100;
-            } else {
-                $amount = 0;
-            }
+            $amount = $this->getFormatAmount($transactionData);
 
             $expiryMonth = '';
             $expiryYear = '';
             list($expiryMonth, $expiryYear) = explode('/', $transactionData['additional_data']['expiry_date']);
 
             // save payment infos to sales_flat_order_payment
-            $_order->getPayment()
+            $order->getPayment()
                 ->setCcType('CB')
                 ->setCcLast4($transactionData['additional_data']['card_summary'])
                 ->setCcExpMonth($expiryMonth)
@@ -194,12 +213,12 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
             // save transaction details to sales_payment_transaction
             $additionalInfo = array(
-                Mage::helper('oyst_oyst')->__('Payment Service Providers') => Oyst_Oyst_Model_Payment_Method_Oyst::PAYMENT_METHOD_NAME,
-                Mage::helper('oyst_oyst')->__('Transaction Number') => $transactionData['payment_id'],
-                Mage::helper('oyst_oyst')->__('Transaction Type') => 'DEBIT',
-                Mage::helper('oyst_oyst')->__('Transaction Status') => $transactionData['event_code'],
-                Mage::helper('oyst_oyst')->__('Amount') => $amount . ' ' . $transactionData['amount']['currency'],
-                Mage::helper('oyst_oyst')->__('Credit Card No Last 4') => $transactionData['additional_data']['card_summary'],
+                $oystHelper->__('Payment Service Providers') => Oyst_Oyst_Model_Payment_Method_Oyst::PAYMENT_METHOD_NAME,
+                $oystHelper->__('Transaction Number') => $transactionData['payment_id'],
+                $oystHelper->__('Transaction Type') => 'DEBIT',
+                $oystHelper->__('Transaction Status') => $transactionData['event_code'],
+                $oystHelper->__('Amount') => $amount . ' ' . $transactionData['amount']['currency'],
+                $oystHelper->__('Credit Card No Last 4') => $transactionData['additional_data']['card_summary'],
                 Mage::helper('oyst_oyst')->__('Expiration Date') => $expiryMonth . ' / ' . $expiryYear,
             );
 
@@ -223,7 +242,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
                 $payment->registerCaptureNotification($amount, true);
             }
 
-            $_order->save();
+            $order->save();
         }
     }
 
@@ -235,7 +254,10 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     public function getPaymentUrl()
     {
         $params = $this->_constructParams();
-        $response = Mage::getModel('oyst_oyst/payment_apiWrapper')->getPaymentUrl($params);
+
+        /** @var Oyst_Oyst_Model_Payment_ApiWrapper $paymentApiWrapper */
+        $paymentApiWrapper = Mage::getModel('oyst_oyst/payment_apiWrapper');
+        $response = $paymentApiWrapper->getPaymentUrl($params);
 
         return $response;
     }
@@ -393,10 +415,39 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
      *
      * @param string $code
      *
-     * @return mixed
+     * @return string
      */
-    protected function _getConfig($code)
+    protected function _getConfig($code, $paymentMethodCode = null, $storeId = null)
     {
-        return Mage::getStoreConfig("oyst/payment_settings/$code");
+        if (null === $storeId) {
+            $storeId = Mage::app()->getStore()->getStoreId();
+        }
+        if (empty($paymentMethodCode)) {
+            return trim(Mage::getStoreConfig("oyst/payment_settings/$code", $storeId));
+        }
+
+        return trim(Mage::getStoreConfig("oyst/$paymentMethodCode/$code", $storeId));
+    }
+
+    /**
+     * Format the amount to get the right syntax
+     *
+     * @param array $transactionData
+     *
+     * @return float|int $amount
+     */
+    private function getFormatAmount($transactionData)
+    {
+        $amount = !empty($transactionData['amount']) ?
+            !empty($transactionData['amount']['value']) ? $transactionData['amount']['value'] : 0 : 0;
+
+        //must transform amount from YYYYY to YYY.YY
+        if ($amount > 0) {
+            $amount = (float)$amount / 100;
+        } else {
+            $amount = 0;
+        }
+
+        return $amount;
     }
 }

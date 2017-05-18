@@ -46,7 +46,9 @@ class Oyst_Oyst_Model_Order_ApiWrapper extends Mage_Core_Model_Abstract
                 )
             );
         } else {
-            $response = Mage::helper('oyst_oyst')->__("order id %s or status %s not found", $oystOrderId, $status);
+            /** @var Oyst_Oyst_Helper_Data $oystHelper */
+            $oystHelper = Mage::helper('oyst_oyst');
+            $response = $oystHelper->__("order id %s or status %s not found", $oystOrderId, $status);
         }
 
         return $response;

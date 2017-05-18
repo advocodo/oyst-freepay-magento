@@ -27,4 +27,26 @@ class Oyst_Oyst_Helper_Data extends Mage_Core_Helper_Abstract
             Mage::log($message, null, 'oyst.log', true);
         }
     }
+
+    /**
+     * Determine if the payment method is oyst
+     *
+     * @param Mage_Sales_Model_Order $order
+     *
+     * @return boolean
+     */
+    public function isPaymentMethodOyst(Mage_Sales_Model_Order $order)
+    {
+        return strpos($order->getPayment()->getMethod(), 'oyst') !== false;
+    }
+
+    /**
+     * Get the extension version
+     *
+     * @return string Extension version
+     */
+    public function getExtensionVersion()
+    {
+        return (string) Mage::getConfig()->getNode()->modules->Oyst_Oyst->version;
+    }
 }
