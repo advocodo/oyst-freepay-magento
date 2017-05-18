@@ -37,7 +37,7 @@ class Oyst_Oyst_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isPaymentMethodOyst(Mage_Sales_Model_Order $order)
     {
-        return strpos($order->getPayment()->getMethod(), 'oyst') !== false;
+        return strpos($order->getPayment()->getMethod(), Oyst_Oyst_Model_Payment_Method_Oyst::PAYMENT_METHOD_CODE) !== false;
     }
 
     /**

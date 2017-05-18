@@ -14,6 +14,7 @@
  */
 class Oyst_Oyst_Model_Payment_Method_Oyst extends Mage_Payment_Model_Method_Abstract
 {
+    const PAYMENT_METHOD_CODE = 'oyst';
     const PAYMENT_METHOD_NAME = 'Oyst Freepay';
 
     const EVENT_CODE_AUTHORISATION = 'AUTHORISATION';
@@ -26,28 +27,32 @@ class Oyst_Oyst_Model_Payment_Method_Oyst extends Mage_Payment_Model_Method_Abst
      * Payment method code
      * @var string
      */
-    protected $_code = 'oyst';
+    protected $_code = self::PAYMENT_METHOD_CODE;
 
     /**
      * Specify to magento that there is a 'payment_action'
+     *
      * @var bool
      */
     protected $_isInitializeNeeded = true;
 
     /**
      * Specify to magento that the payment is not internal
+     *
      * @var bool
      */
     protected $_canUseInternal = false;
 
     /**
      * Specify to magento that the payment method is not for multiple shipping address
+     *
      * @var bool
      */
     protected $_canUseForMultishipping = false;
 
     /**
      * Native method for retrieve Oyst Form Redirect Url
+     *
      * @return string
      */
     public function getOrderPlaceRedirectUrl()

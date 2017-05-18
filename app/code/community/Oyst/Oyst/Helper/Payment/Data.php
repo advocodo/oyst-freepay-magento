@@ -25,15 +25,18 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
     public function syncFromNotification($event, $data)
     {
         //get last notification
-        $lastNotification = Mage::getModel('oyst_oyst/notification')
-            ->getLastNotification('payment', $data['payment_id']);
+
+        /** @var Oyst_Oyst_Model_Notification $lastNotification */
+        $lastNotification = Mage::getModel('oyst_oyst/notification');
+        $lastNotification = $lastNotification->getLastNotification('payment', $data['payment_id']);
 
         //if last notification is not finished
-        if ($lastNotification->getId() && $lastNotification->getStatus() != 'finished') {
-            Mage::throwException($this->__("Last Notification payment id %s is not finished", $data['payment_id']));
+        if ($lastNotification->getId() && 'finished' != $lastNotification->getStatus()) {
+            Mage::throwException($this->__('Last Notification payment id %s is not finished', $data['payment_id']));
         }
 
         //create new notification in db with status 'start'
+        /** @var Oyst_Oyst_Model_Notification $notification */
         $notification = Mage::getModel('oyst_oyst/notification');
         $notification->setData(
             array(
@@ -48,7 +51,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
         //get order INCREMENT id
         if (empty($data['order_increment_id'])) {
-            Mage::throwException($this->__("order_id not found for payment id %s", $data['payment_id']));
+            Mage::throwException($this->__('order_id not found for payment id %s', $data['payment_id']));
         }
 
         $orderIncrementId = $data['order_increment_id'];
@@ -190,6 +193,7 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
         /** @var Oyst_Oyst_Helper_Data $oystHelper */
         $oystHelper = Mage::helper('oyst_oyst');
 
+        /** @var Mage_Sales_Model_Order $order */
         $order = Mage::getModel('sales/order')->load($orderId);
 
         $paymentId = !empty($transactionData['payment_id']) ? $transactionData['payment_id'] : false;
@@ -200,17 +204,6 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
 
             $amount = $this->getFormatAmount($transactionData);
 
-            $expiryMonth = '';
-            $expiryYear = '';
-            list($expiryMonth, $expiryYear) = explode('/', $transactionData['additional_data']['expiry_date']);
-
-            // save payment infos to sales_flat_order_payment
-            $order->getPayment()
-                ->setCcType('CB')
-                ->setCcLast4($transactionData['additional_data']['card_summary'])
-                ->setCcExpMonth($expiryMonth)
-                ->setCcExpYear($expiryYear);
-
             // save transaction details to sales_payment_transaction
             $additionalInfo = array(
                 $oystHelper->__('Payment Service Providers') => Oyst_Oyst_Model_Payment_Method_Oyst::PAYMENT_METHOD_NAME,
@@ -218,9 +211,39 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
                 $oystHelper->__('Transaction Type') => 'DEBIT',
                 $oystHelper->__('Transaction Status') => $transactionData['event_code'],
                 $oystHelper->__('Amount') => $amount . ' ' . $transactionData['amount']['currency'],
-                $oystHelper->__('Credit Card No Last 4') => $transactionData['additional_data']['card_summary'],
-                Mage::helper('oyst_oyst')->__('Expiration Date') => $expiryMonth . ' / ' . $expiryYear,
             );
+
+            if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_AUTHORISATION == $transactionData['event_code']) {
+                $expiryMonth = $expiryYear = null;
+                list($expiryMonth, $expiryYear) = explode('/', $transactionData['additional_data']['expiry_date']);
+
+                // save payment infos to sales_flat_order_payment
+                $order->getPayment()
+                    ->setCcType('CB')
+                    ->setCcLast4($transactionData['additional_data']['card_summary'])
+                    ->setCcExpMonth($expiryMonth)
+                    ->setCcExpYear($expiryYear);
+
+                // save transaction details to sales_payment_transaction
+                $additionalInfo[$oystHelper->__('Credit Card No Last 4')] = $transactionData['additional_data']['card_summary'];
+                $additionalInfo[$oystHelper->__('Expiration Date')] = $expiryMonth . ' / ' . $expiryYear;
+            }
+
+
+            if (Oyst_Oyst_Model_Payment_Method_Oyst::EVENT_CODE_CAPTURE == $transactionData['event_code']) {
+                /** @var Mage_Sales_Model_Resource_Order_Payment_Transaction_Collection $transactions */
+                $transactions = Mage::getResourceModel('sales/order_payment_transaction_collection')
+                    ->addOrderIdFilter($order->getId())
+                    ->addOrderInformation(array('increment_id'))
+                    ->addPaymentInformation(array('method'))
+                    ->addAttributeToFilter('txn_type', array('eq' => Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH))
+                    ->addAttributeToFilter('method', array('eq' => Oyst_Oyst_Model_Payment_Method_Oyst::PAYMENT_METHOD_CODE))
+                    ->addAttributeToFilter('is_closed', array('eq' => true));
+
+                foreach ( $transactions as $t) {
+                    $payment->setTransactionId($paymentId)->setParentTransactionId($t->getId());
+                }
+            }
 
             //set transaction addition information
             $payment->setTransactionAdditionalInfo(
@@ -229,9 +252,9 @@ class Oyst_Oyst_Helper_Payment_Data extends Mage_Core_Helper_Abstract
             );
 
             $payment->setTransactionId($paymentId)
-                ->setCurrencyCode()
-                ->setPreparedMessage("Success")
-                ->setParentTransactionId(false)
+                ->setCurrencyCode($transactionData['amount']['currency'])
+                ->setPreparedMessage('Success')
+                //->setParentTransactionId(false)
                 ->setShouldCloseParentTransaction(true)
                 ->setIsTransactionClosed(1)
                 ->setAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, $additionalInfo);

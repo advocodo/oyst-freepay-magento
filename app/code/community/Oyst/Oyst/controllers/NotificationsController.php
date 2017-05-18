@@ -59,6 +59,7 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
             $helperName = 'oyst_oyst/payment_data';
         }
 
+        /** @var $helperName $helper */
         $helper = Mage::helper($helperName);
         if (!$helper) {
             $this->getResponse()
