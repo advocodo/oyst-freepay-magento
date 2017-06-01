@@ -2,7 +2,7 @@
 /**
  * This file is part of Oyst_Oyst for Magento.
  *
- * @license All rights reserved, Oyst
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @author Oyst <dev@oyst.com> <@oystcompany>
  * @category Oyst
  * @package Oyst_Oyst
@@ -32,14 +32,16 @@ class Oyst_Oyst_Model_Payment_ApiWrapper extends Mage_Core_Model_Abstract
 
     /**
      * @param string $lastTransId
+     * @param int $amount
+     * @return
      */
-    public function cancelOrRefund($lastTransId)
+    public function cancelOrRefund($lastTransId, $amount = null)
     {
         /** @var Oyst_Oyst_Model_Api $paymentApi */
         $paymentApi = Mage::getModel('oyst_oyst/api');
 
-        $response = $paymentApi->sendCancelOrRefund(Oyst_Oyst_Model_Api::TYPE_PAYMENT, $lastTransId)->getResponse();
+        $response = $paymentApi->sendCancelOrRefund(Oyst_Oyst_Model_Api::TYPE_PAYMENT, $lastTransId, $amount)->getResponse();
 
-        return $response['response'];
+        return $response;
     }
 }

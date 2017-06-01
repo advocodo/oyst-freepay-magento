@@ -2,7 +2,7 @@
 /**
  * This file is part of Oyst_Oyst for Magento.
  *
- * @license All rights reserved, Oyst
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @author Oyst <dev@oyst.com> <@oystcompany>
  * @category Oyst
  * @package Oyst_Oyst
@@ -63,5 +63,16 @@ class Oyst_Oyst_Adminhtml_Oyst_ActionsController extends Mage_Adminhtml_Controll
     public function indexAction()
     {
         $this->_initAction()->renderLayout();
+    }
+
+    /**
+     * Skip setup by setting the config flag accordingly
+     */
+    public function skipAction()
+    {
+        /** @var Oyst_Oyst_Helper_Data $helper */
+        $helper = Mage::helper('oyst_oyst');
+        $helper->setIsInitialized();
+        $this->_redirectReferer();
     }
 }

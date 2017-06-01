@@ -2,7 +2,7 @@
 /**
  * This file is part of Oyst_Oyst for Magento.
  *
- * @license All rights reserved, Oyst
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @author Oyst <dev@oyst.com> <@oystcompany>
  * @category Oyst
  * @package Oyst_Oyst
@@ -59,7 +59,6 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
             $helperName = 'oyst_oyst/payment_data';
         }
 
-        /** @var $helperName $helper */
         $helper = Mage::helper($helperName);
         if (!$helper) {
             $this->getResponse()
@@ -70,6 +69,11 @@ class Oyst_Oyst_NotificationsController extends Mage_Core_Controller_Front_Actio
             return $this;
         }
 
+        /**
+         * @var Oyst_Oyst_Helper_Catalog_Data $result
+         * @var Oyst_Oyst_Helper_Order_Data $result
+         * @var Oyst_Oyst_Helper_Payment_Data $result
+         */
         $result = $helper->syncFromNotification($event, $data);
         $this->getResponse()->setBody(Zend_Json::encode($result));
     }

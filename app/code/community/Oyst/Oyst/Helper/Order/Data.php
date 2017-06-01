@@ -2,7 +2,7 @@
 /**
  * This file is part of Oyst_Oyst for Magento.
  *
- * @license All rights reserved, Oyst
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @author Oyst <dev@oyst.com> <@oystcompany>
  * @category Oyst
  * @package Oyst_Oyst
@@ -147,7 +147,7 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
         $quote = $this->_initCustomerInfos($params, $quote);
 
         //transform quote to order
-        $order = $this->_submitQuote($params, $quote);
+        $order = $this->_submitQuote($quote);
 
         //change status of order if need to be invoice
         $order = $this->_changeStatus($params, $order);
@@ -318,12 +318,13 @@ class Oyst_Oyst_Helper_Order_Data extends Mage_Core_Helper_Abstract
     /**
      * Transform temporary cart to order
      *
-     * @param array $params
      * @param Mage_Sales_Model_Quote $quote
      *
      * @return Mage_Sales_Model_Order
+     *
+     * @internal param array $params
      */
-    protected function _submitQuote($params, $quote)
+    protected function _submitQuote($quote)
     {
         $service = Mage::getModel('sales/service_quote', $quote);
         $service->submitAll();

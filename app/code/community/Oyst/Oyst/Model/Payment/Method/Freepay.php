@@ -2,7 +2,7 @@
 /**
  * This file is part of Oyst_Oyst for Magento.
  *
- * @license All rights reserved, Oyst
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @author Oyst <dev@oyst.com> <@oystcompany>
  * @category Oyst
  * @package Oyst_Oyst
@@ -12,47 +12,31 @@
 /**
  * Payment_Method_Oyst Model
  */
-class Oyst_Oyst_Model_Payment_Method_Oyst extends Mage_Payment_Model_Method_Abstract
+class Oyst_Oyst_Model_Payment_Method_Freepay extends Mage_Payment_Model_Method_Abstract
 {
-    const PAYMENT_METHOD_CODE = 'oyst';
     const PAYMENT_METHOD_NAME = 'Oyst Freepay';
 
     const EVENT_CODE_AUTHORISATION = 'AUTHORISATION';
     const EVENT_CODE_CAPTURE = 'CAPTURE';
     const EVENT_CODE_CANCELLATION = 'CANCELLATION';
+    const EVENT_CODE_REFUND = 'REFUND';
 
+    protected $_code = 'oyst_freepay';
+    protected $_formBlockType = 'oyst_oyst/form_freepay';
     protected $_infoBlockType = 'oyst_oyst/info_freepay';
 
     /**
-     * Payment method code
-     * @var string
-     */
-    protected $_code = self::PAYMENT_METHOD_CODE;
-
-    /**
-     * Specify to magento that there is a 'payment_action'
-     *
+     * Payment Method features
      * @var bool
      */
+    protected $_canRefund = true;
+    protected $_canRefundInvoicePartial = true;
+    protected $_canUseInternal = false;
+    protected $_canUseForMultishipping = false;
     protected $_isInitializeNeeded = true;
 
     /**
-     * Specify to magento that the payment is not internal
-     *
-     * @var bool
-     */
-    protected $_canUseInternal = false;
-
-    /**
-     * Specify to magento that the payment method is not for multiple shipping address
-     *
-     * @var bool
-     */
-    protected $_canUseForMultishipping = false;
-
-    /**
      * Native method for retrieve Oyst Form Redirect Url
-     *
      * @return string
      */
     public function getOrderPlaceRedirectUrl()

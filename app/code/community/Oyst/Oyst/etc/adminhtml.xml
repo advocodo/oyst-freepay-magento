@@ -1,18 +1,5 @@
 <?xml version="1.0"?>
 <config>
-    <menu>
-        <oyst translate="title" module="oyst_oyst">
-            <title>Oyst</title>
-            <sort_order>90</sort_order>
-            <children>
-                <actions translate="title" module="oyst_oyst">
-                    <title>Actions</title>
-                    <action>adminhtml/oyst_actions</action>
-                    <sort_order>10</sort_order>
-                </actions>
-            </children>
-        </oyst>
-    </menu>
     <acl>
         <resources>
             <all>

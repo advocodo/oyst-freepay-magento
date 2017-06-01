@@ -4,6 +4,9 @@
         <Oyst_Oyst>
             <active>true</active>
             <codePool>community</codePool>
+            <depends>
+                <Mage_Payment />
+            </depends>
         </Oyst_Oyst>
     </modules>
 </config>

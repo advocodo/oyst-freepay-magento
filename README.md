@@ -1,10 +1,13 @@
 Magento
 =======
 
-Build Status
-------------
-* Latest Release: [![Master Branch](https://travis-ci.org/OystParis/oyst-magento.svg?branch=master)](https://travis-ci.org/OystParis/oyst-magento)
-* Development Branch: [![Development Branch](https://travis-ci.org/OystParis/oyst-magento.svg??branch=development)](https://travis-ci.org/OystParis/oyst-magento)
+[![Master Branch](https://travis-ci.org/OystParis/oyst-magento.svg?branch=master)](https://travis-ci.org/OystParis/oyst-magento)
+![Latest version](https://img.shields.io/badge/latest-1.0.0-green.svg)
+![Magento 1.6.x.x](https://img.shields.io/badge/magento-1.6-blue.svg)
+![Magento 1.7.x.x](https://img.shields.io/badge/magento-1.7-blue.svg)
+![Magento 1.8.x.x](https://img.shields.io/badge/magento-1.8-blue.svg)
+![Magento 1.9.x.x](https://img.shields.io/badge/magento-1.9-blue.svg)
+![PHP >= 5.3](https://img.shields.io/badge/php-%3E=5.3-green.svg)
 
 
 This is the Oyst Payment plugin for Magento 1.x.

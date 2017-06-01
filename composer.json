@@ -14,33 +14,37 @@
         "php": ">=5.3",
         "magento-hackathon/magento-composer-installer": "*"
     },
-    "require-dev" :  {
-        "phpunit/phpunit" : "4.1.*@dev",
-        "firegento/mage-ci" : "master-dev",
-        "squizlabs/php_codesniffer": "2.*",
+    "require-dev":  {
+        "phpunit/phpunit": "4.1.*@dev",
+        "firegento/mage-ci": "master-dev",
+        "squizlabs/php_codesniffer": "2.6.*",
         "magento-ecg/coding-standard": "dev-php-5.3-compatible|dev-master",
         "sebastian/phpdcd": "*",
         "sebastian/phpcpd": "*",
         "phpmd/phpmd": "*",
-        "phploc/phploc": "*"
+        "phploc/phploc": "*",
+        "wimg/php-compatibility": "*",
+        "simplyadmire/composer-plugins": "@dev"
     },
-    "config" :       {
-        "bin-dir" : "bin"
+    "config": {
+        "bin-dir": "bin"
     },
-    "repositories" : [
+    "repositories": [
         {
-            "type" : "composer",
-            "url" :  "https://packages.firegento.com"
+            "type": "composer",
+            "url":  "https://packages.firegento.com"
         }
     ],
     "scripts": {
         "post-install-cmd": [
-            "./lib/Oyst/get-sdk.sh",
-            "./bin/phpcs --config-set ignore_warnings_on_exit 1"
+            "./lib/Oyst/get-sdk.sh"
         ],
         "post-update-cmd": [
-            "./lib/Oyst/get-sdk.sh",
-            "./bin/phpcs --config-set ignore_warnings_on_exit 1"
+            "./lib/Oyst/get-sdk.sh"
         ]
+    },
+    "support": {
+        "issues": "https://github.com/OystParis/oyst-freepay-magento/issues",
+        "source": "https://github.com/OystParis/oyst-freepay-magento/"
     }
 }

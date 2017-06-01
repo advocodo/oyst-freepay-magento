@@ -1,0 +1,34 @@
+<?php
+/**
+ * This file is part of Oyst_Oyst for Magento.
+ *
+ * @license All rights reserved, Oyst
+ * @author Oyst <dev@oyst.com> <@oystcompany>
+ * @category Oyst
+ * @package Oyst_Oyst
+ * @copyright Copyright (c) 2017 Oyst (http://www.oyst.com)
+ */
+?>
+<?php
+/**
+ * @see Oyst_Oyst_Block_Adminhtml_Notifications
+ */
+?>
+<?php
+/** @var Oyst_Oyst_Helper_Data $oystHelper */
+$oystHelper = Mage::helper('oyst_oyst');
+
+/** @var Oyst_Oyst_Block_Adminhtml_Notifications $this */
+if (!$this->isInitialized()): ?>
+    <div class="notification-global">
+        <span class="f-right">
+            <a href="<?php echo $this->getSkipUrl() ?>">
+                <?php echo $this->helper('oyst_oyst')->__('Skip installation') ?></a>
+        </span>
+        <strong><?php echo $this->helper('oyst_oyst')->__('FreePay has been installed.') ?></strong>
+        <?php echo $this->helper('oyst_oyst')->__(
+                'Click <a href="%s">here</a> to set up your settings.',
+                $this->getManageUrl()
+        ) ?>
+    </div>
+<?php endif;

@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <layout>
+    <default>
+        <reference name="notifications">
+            <block type="oyst_oyst/adminhtml_notifications" name="adminhtml_oyst_notifications" as="adminhtml_oyst_notifications" template="oyst/notifications.phtml" before="-" />
+        </reference>
+    </default>
     <adminhtml_oyst_actions_index>
         <reference name="content">
             <block type="core/template" name="adminhtml_oyst_actions" as="adminhtml_oyst_actions" template="oyst/actions.phtml" />

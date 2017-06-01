@@ -2,7 +2,7 @@
 /**
  * This file is part of Oyst_Oyst for Magento.
  *
- * @license All rights reserved, Oyst
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @author Oyst <dev@oyst.com> <@oystcompany>
  * @category Oyst
  * @package Oyst_Oyst
@@ -12,7 +12,7 @@
 /**
  * Observer Model
  */
-class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
+class Oyst_Oyst_Model_Observer
 {
     /**
      * Add mass action on product grid
@@ -87,7 +87,8 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
         if (!$this->_getConfig("order", "enable") || Mage::registry('order_status_changing')) {
             return $this;
         }
-        
+
+        /** @var Mage_Sales_Model_Order $order */
         $order = $observer->getOrder();
         $state = $order->getState();
         if ($order->getOrigData('state') != $state) {
@@ -113,16 +114,21 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
             }
         }
 
-        Mage::helper('oyst_oyst')->log('Start of update of order id : ' . $order->getId());
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
+        $oystHelper->log('Start of update of order id : ' . $order->getId());
 
         // sent status update
-        Mage::helper('oyst_oyst/order_data')->updateStatus(
+        /** @var Oyst_Oyst_Helper_Order_Data $orderData */
+        $orderData = Mage::helper('oyst_oyst/order_data');
+        $orderData->updateStatus(
             array(
                 'oyst_order_id' => $order->getOystOrderId(),
-                'status' => $oystStatus
+                'status' => $oystStatus,
             )
         );
-        Mage::helper('oyst_oyst')->log('End of update of order id : ' . $order->getId());
+        $oystHelper->log('End of update of order id : ' . $order->getId());
 
         return $this;
     }
@@ -134,7 +140,7 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
      *
      * @return Oyst_Oyst_Model_Observer
      */
-    public function sendCancelOrderStatusUpdate(Varien_Event_Observer $observer)
+    public function salesOrderPaymentCancel(Varien_Event_Observer $observer)
     {
         /** @var Oyst_Oyst_Helper_Data $oystHelper */
         $oystHelper = Mage::helper('oyst_oyst');
@@ -142,17 +148,21 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Sales_Model_Order $order */
         $order = $observer->getPayment()->getOrder();
 
-        if (!$this->isPaymentMethodOyst($order)) {
+        if (!$oystHelper->isPaymentMethodOyst($order)) {
             return;
         }
 
-        $orderStatusOnCancel = Mage::getStoreConfig('payment/oyst/payment_cancelled');
+        $orderStatusOnCancel = Mage::getStoreConfig('payment/oyst_freepay/payment_cancelled');
+
         if (Mage_Sales_Model_Order::STATE_HOLDED === $orderStatusOnCancel) {
             if ($order->canHold()) {
                 $order
                     ->hold()
                     ->addStatusHistoryComment(
-                        $oystHelper->__('Cancel Order asked. Waiting for Freepay notification. Transaction ID: "%s".', $order->getTxnId())
+                        $oystHelper->__(
+                            'Cancel Order asked. Waiting for FreePay notification. Payment Id: "%s".',
+                            $order->getTxnId()
+                        )
                     )
                     ->save();
             }
@@ -163,7 +173,7 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
                 $order
                     ->cancel()
                     ->addStatusHistoryComment(
-                        $oystHelper->__('Success Cancel Order. Transaction ID: "%s".', $order->getTxnId())
+                        $oystHelper->__('Success Cancel Order. Payment Id: "%s".', $order->getTxnId())
                     )
                     ->save();
 
@@ -181,7 +191,64 @@ class Oyst_Oyst_Model_Observer extends Mage_Core_Model_Abstract
 
         return $this;
     }
-    
+
+    /**
+     * Update order status on refund event
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return Oyst_Oyst_Model_Observer
+     */
+    public function salesOrderPaymentRefund(Varien_Event_Observer $observer)
+    {
+        /** @var Oyst_Oyst_Helper_Data $oystHelper */
+        $oystHelper = Mage::helper('oyst_oyst');
+
+        /** @var Mage_Sales_Model_Order_Payment $payment */
+        $payment = $observer->getPayment();
+
+        Mage::log(get_class($payment));
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $payment->getOrder();
+
+        if (!$oystHelper->isPaymentMethodOyst($order)) {
+            return;
+        }
+
+        if (!$payment->canRefund()) {
+            Mage::throwException(Mage::helper('payment')->__('Refund action is not available.'));
+        }
+
+        $oystHelper->log('Start send cancelOrRefund from refund of order id : ' . $order->getId());
+
+        /** @var Oyst_Oyst_Model_Payment_ApiWrapper $response */
+        $response = Mage::getModel('oyst_oyst/payment_apiWrapper');
+        $amount = $observer->getPayment()->getAmountRefunded();
+        $response->cancelOrRefund($order->getPayment()->getLastTransId(), $amount);
+
+        if ($response === false) {
+            $errorCode = 'Invalid Data';
+            $errorMsg = $this->_getHelper()->__('Error Processing the request');
+            Mage::throwException($errorMsg);
+        }
+
+        if ($order->canHold()) {
+            $order
+                ->hold()
+                ->addStatusHistoryComment(
+                    $oystHelper->__(
+                        'Refund Order asked. Waiting for FreePay notification. Payment Id: "%s".',
+                        $order->getTxnId()
+                    )
+                )
+                ->save();
+        }
+
+        $oystHelper->log('Waiting from cancelOrRefund notification of order id : ' . $order->getId());
+
+        return $this;
+    }
+
     public function validateApiKey(Varien_Event_Observer $observer)
     {
         $config = $observer->getEvent()->getObject();

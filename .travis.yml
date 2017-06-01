@@ -64,8 +64,12 @@ install:
 script:
   - mkdir -p build/logs
   - curl --retry 2 --retry-delay 5 -f -sSL https://raw.githubusercontent.com/AOEpeople/MageTestStand/master/setup.sh | bash
-  ## PHP_CodeSniffer
-  - ./bin/phpcs --standard=vendor/magento-ecg/coding-standard/Ecg --extensions=php,phtml --ignore=bin,lib,vendor $TRAVIS_BUILD_DIR
+  ## PHP CodeSniffer disable error on exit
+  - ./bin/phpcs --config-set ignore_warnings_on_exit 1
+  ## PHP CodeSniffer with ECG Magento Code Sniffer Coding Standard
+  - rm -Rf vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/Ecg &&
+    cp -R vendor/magento-ecg/coding-standard/Ecg vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/Ecg &&
+    ./bin/phpcs --standard=Ecg --extensions=php,phtml --ignore=bin,lib,vendor $TRAVIS_BUILD_DIR
   ## PHP Copy/Paste Detector
   - ./bin/phpcpd $TRAVIS_BUILD_DIR --exclude bin --exclude lib --exclude vendor
   ## PHP Mess Detector
@@ -80,7 +84,18 @@ script:
   ## LINT
   - find $TRAVIS_BUILD_DIR/app -type f -name \*.php -exec php -l {} \;
   ## Magento EQP Coding Standard
-  - if [[ "${TRAVIS_PHP_VERSION:0:3}" = "5.6" ]]; then composer config http-basic.repo.magento.com $MAGENTO_REPO_PUBLIC_KEY $MAGENTO_REPO_PRIVATE_KEY && composer require -n magento/marketplace-eqp && ./bin/phpcs --standard=vendor/magento/marketplace-eqp/MEQP1 --extensions=php,phtml --ignore=bin,lib,vendor $TRAVIS_BUILD_DIR; fi
+  - if [[ "${TRAVIS_PHP_VERSION:0:3}" = "5.6" ]]; then
+      composer config http-basic.repo.magento.com $MAGENTO_REPO_PUBLIC_KEY $MAGENTO_REPO_PRIVATE_KEY &&
+      composer require -n magento/marketplace-eqp &&
+      rm -Rf vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/MEQP1 &&
+      cp -a vendor/magento/marketplace-eqp/MEQP1 vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/MEQP1 &&
+      cp -a vendor/magento/marketplace-eqp/Utils vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/Utils &&
+      ./bin/phpcs --standard=MEQP1 --extensions=php,phtml --ignore=bin,lib,vendor --severity=10 $TRAVIS_BUILD_DIR;
+    fi
+  ## PHPCompatibility
+  - rm -Rf vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility &&
+    cp -a vendor/wimg/php-compatibility vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility &&
+    ./bin/phpcs --standard=PHPCompatibility --extensions=php,phtml --ignore=bin,lib,vendor --runtime-set testVersion ${TRAVIS_PHP_VERSION:0:3} $TRAVIS_BUILD_DIR
 
 notifications:
   email:

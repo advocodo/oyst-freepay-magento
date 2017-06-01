@@ -96,52 +96,25 @@
     </admin>
     <adminhtml>
         <events>
-            <adminhtml_catalog_product_grid_prepare_massaction>
-                <observers>
-                    <oyst_addCatalogMassAction>
-                        <class>oyst_oyst/observer</class>
-                        <method>addCatalogMassAction</method>
-                    </oyst_addCatalogMassAction>
-                </observers>
-            </adminhtml_catalog_product_grid_prepare_massaction>
-            <catalog_product_save_after>
-                <observers>
-                    <oyst_sendproductupdate>
-                        <type>singleton</type>
-                        <class>Oyst_Oyst_Model_Observer</class>
-                        <method>sendProductUpdate</method>
-                    </oyst_sendproductupdate>
-                </observers>
-            </catalog_product_save_after>
-            <model_config_data_save_before>
-                <observers>
-                    <validate_api_key>
-                        <type>singleton</type>
-                        <class>Oyst_Oyst_Model_Observer</class>
-                        <method>validateApiKey</method>
-                    </validate_api_key>
-                </observers>
-            </model_config_data_save_before>
-            <sales_order_save_after>
-                <observers>
-                    <auto_invoice_order>
-                        <type>singleton</type>
-                        <class>Oyst_Oyst_Model_Observer</class>
-                        <method>sendOrderStatusUpdate</method>
-                    </auto_invoice_order>
-                </observers>
-            </sales_order_save_after>
-
             <!-- Change the cancel button action -->
             <sales_order_payment_cancel>
                 <observers>
-                    <hold_order_on_cancel>
-                        <type>singleton</type>
+                    <oyst_payment>
                         <class>Oyst_Oyst_Model_Observer</class>
-                        <method>sendCancelOrderStatusUpdate</method>
-                    </hold_order_on_cancel>
+                        <method>salesOrderPaymentCancel</method>
+                    </oyst_payment>
                 </observers>
             </sales_order_payment_cancel>
+
+            <!-- Change the refund button action -->
+            <sales_order_payment_refund>
+                <observers>
+                    <oyst_payment>
+                        <class>Oyst_Oyst_Model_Observer</class>
+                        <method>salesOrderPaymentRefund</method>
+                    </oyst_payment>
+                </observers>
+            </sales_order_payment_refund>
         </events>
         <layout>
             <updates>
@@ -164,30 +137,34 @@
     <!-- Default configuration values -->
     <default>
         <payment>
-            <oyst>
+            <oyst_abstract>
                 <developed_by>Oyst</developed_by>
                 <contact_email>dev@oyst.com</contact_email>
                 <sdk_version>v1.2.0</sdk_version>
                 <enable_logs>1</enable_logs>
-
-                <model>oyst_oyst/payment_method_oyst</model>
-
+                <mode>prod</mode>
+                <invoice_label>FreePay</invoice_label>
+            </oyst_abstract>
+            <oyst_freepay translate="title" module="oyst_oyst">
                 <active>1</active>
                 <title>Payer par carte bancaire</title>
+                <model>oyst_oyst/payment_method_freepay</model>
                 <order_status>pending</order_status>
+                <payment_cancelled>holded</payment_cancelled>
+                <refund_authorized>closed</refund_authorized>
                 <payment_action>authorize_capture</payment_action>
                 <allowspecific>0</allowspecific>
                 <sort_order>0</sort_order>
-            </oyst>
+            </oyst_freepay>
         </payment>
         <oyst>
             <catalog_settings>
+                <enable>0</enable>
                 <number_per_pack>1000</number_per_pack>
             </catalog_settings>
-            <payment_settings>
-                <invoice_label>Oyst</invoice_label>
-                <secure_3ds_enable>1</secure_3ds_enable>
-            </payment_settings>
+            <order_settings>
+                <enable>0</enable>
+            </order_settings>
             <dev>
                 <register_autoloader>1</register_autoloader>
                 <autoloader_basepath>lib/Oyst/oyst-php</autoloader_basepath>
