@@ -3,7 +3,6 @@ Magento
 
 [![Master Branch](https://travis-ci.org/OystParis/oyst-magento.svg?branch=master)](https://travis-ci.org/OystParis/oyst-magento)
 ![Latest version](https://img.shields.io/badge/latest-1.0.0-green.svg)
-![Magento 1.6.x.x](https://img.shields.io/badge/magento-1.6-blue.svg)
 ![Magento 1.7.x.x](https://img.shields.io/badge/magento-1.7-blue.svg)
 ![Magento 1.8.x.x](https://img.shields.io/badge/magento-1.8-blue.svg)
 ![Magento 1.9.x.x](https://img.shields.io/badge/magento-1.9-blue.svg)
